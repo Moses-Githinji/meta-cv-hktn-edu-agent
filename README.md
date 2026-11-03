@@ -50,6 +50,12 @@ To reproduce the project end to end on your own machine, follow
 ./helper reset [--clear-runs]
 ```
 
+Every command that takes `RUN_ID` means the id `./helper run` prints at
+the end (the `"run_id"` field, e.g. `run-20261103T041500Z-a1b2c3`). If
+you missed it: it is the folder name in `workspace/runs/` (so `ls
+workspace/runs/` lists every run), or pick the run in the console's run
+list.
+
 ## Repository map
 
 - `teaching_agent/` — the agent: the agentic loop (`loop.py`) and

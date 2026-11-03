@@ -6,6 +6,10 @@
 ./helper verify RUN_ID --independent   # independent verification (separate process:
                                        # recomputes everything, different judge, hashes the document)
 
+RUN_ID is the id ./helper run prints at the end (the "run_id" field).
+Missed it? It is the folder name in workspace/runs/, or pick the run
+in the console's run list.
+
 Teaching runs (a curriculum pack under the root, kind scheme/exam) use the
 teaching checks (verification/verify_scheme.py, verify_teaching_checklist.py);
 other runs use the legal checks. The same check functions the tools call.

@@ -10,6 +10,10 @@
     ./helper review RUN_ID --hod-reject --notes "what to fix"  # exam documents only
     ./helper review RUN_ID --answer R1 --notes "reply to the request"
 
+RUN_ID is the id ./helper run prints at the end (the "run_id" field).
+Missed it? It is the folder name in workspace/runs/ (ls workspace/runs/
+lists them), or pick the run in the console's run list.
+
 --list shows one row per checklist item with the curriculum text beside it:
 each cited outcome's exact wording, or its pending-transcription marker.
 Item verdicts are stored on the document; --edit also replaces the filed

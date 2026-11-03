@@ -4,6 +4,9 @@
     ./helper send RUN_ID --what scheme --format pdf --to teacher@school.edu
         [--subject "..."] [--message "..."] [--dry-run] [--json]
 
+RUN_ID is the id ./helper run prints at the end. Missed it? It is the
+folder name in workspace/runs/, or pick the run in the console's run list.
+
 Builds the export with the same builders as ./helper export, so the
 attachment always matches the current record. Configuration comes from
 the environment (.env): SMTP_HOST (required), SMTP_PORT (default 587),

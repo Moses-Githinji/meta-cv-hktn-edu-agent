@@ -187,7 +187,11 @@ The same run from the terminal:
 ```
 
 A run prints one line per turn (`Turn 6: update_plan → … · facts 0 ·
-running`) and a final `{run_id, status, turn}` object.
+running`) and a final `{run_id, status, turn}` object. That `run_id`
+(e.g. `run-20261103T041500Z-a1b2c3`) is the `RUN_ID` every later command
+(`review`, `verify`, `export`, `send`, `branch`, `--resume`) needs. If
+you missed it, run `ls workspace/runs/` — each folder name is a run id —
+or pick the run in the console's run list.
 
 To keep a run going in the background while you do other work:
 

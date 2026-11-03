@@ -3,6 +3,9 @@
 
 ./helper branch RUN_ID      # prints the new run's id; then ./helper run --resume NEW_RUN_ID
 
+RUN_ID is the id ./helper run prints at the end. Missed it? It is the
+folder name in workspace/runs/, or pick the run in the console's run list.
+
 The new run keeps the conversation up to the agent's first set_checklist call, runs that
 checklist through the checklist check, and stops. The original run is not changed.
 """

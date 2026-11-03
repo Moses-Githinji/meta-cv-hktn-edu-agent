@@ -4,6 +4,9 @@
     ./helper export RUN_ID --what scheme|exam|marking-scheme|lesson-plan
         --format docx|pdf [--out FILE]
 
+RUN_ID is the id ./helper run prints at the end. Missed it? It is the
+folder name in workspace/runs/, or pick the run in the console's run list.
+
 Figures number sequentially in order of appearance; the marking scheme
 embeds each answer's figures; every page carries a footer. Default output:
 workspace/runs/RUN_ID/<what>.<format>.
