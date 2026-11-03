@@ -1,13 +1,18 @@
-# Teaching Agent — Grade 7 Mathematics (CBC, Kenya)
+# Teaching Agent (CBC, Kenya)
 
-A teaching agent for one term of Grade 7 Mathematics, forked from the
+A teaching agent for the Kenyan Competency-Based Curriculum — all levels
+(Pre-Primary, Primary, Junior School, Senior School) and all learning
+areas — forked from the
 [legal-agent workshop](https://github.com/Moses-Githinji/legal-agent-workshop.git).
-It plans term coverage from a hand-built curriculum pack, quotes learning
-outcomes exactly as printed in the official KICD design, and files a lesson
-memo for teacher sign-off.
+It plans term coverage from hand-built curriculum packs, quotes learning
+outcomes exactly as printed in the official KICD designs, and files
+documents (schemes of work, lesson plans, exams) for teacher sign-off.
 
-Scope is locked in `docs/01-scope-and-permissions.md`: Grade 7 Mathematics,
-CBC, one term. Outcome text is copied exactly from the official design.
+Project scope is CBC-wide, one term per run. `docs/01-scope-and-permissions.md`
+locks the Phase 1 slice: Grade 7, Term 1. Outcome text is copied exactly
+from the official designs. The six Grade 7 Term 1 packs shipped here are
+the current coverage, not the limit: new packs plug into the same schema,
+pipeline, and console.
 
 ## Quick start
 
@@ -60,10 +65,11 @@ To reproduce the project end to end on your own machine, follow
 - `lessons/`, `exams/`, `diagrams/`, `export/` — follow-up documents:
   lesson plans, exams, figures, Word/PDF export (see `DOCUMENTS.md`).
 - `evals/`, `routing/` — golden tasks and model routing (see `OPERATE.md`).
-- `curriculum/` — schema, loader, and the Term 1 Grade 7 Mathematics pack.
+- `curriculum/` — schema, loader, and the current curriculum packs.
 - `teacher_context/` — term calendar and timetable for one real term.
-- `packs/grade7-*/` — the six Grade 7 subject packs the agent works on
+- `packs/grade7-*/` — the six Grade 7 Term 1 subject packs shipped so far
   (`objective.md` + `documents/`); switch with the console's Task picker.
+  Further CBC levels and subjects follow the same layout.
 - `ui/` — the browser console (stdlib only; see `ui/README.md`).
 - `docs/` — scope, KICD permission draft, ground-rules prompt, legal reference.
 
