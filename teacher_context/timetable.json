@@ -1,0 +1,17 @@
+{
+  "timetable": {
+    "id": "grade7-mathematics-2026-term1-sample",
+    "grade": 7,
+    "learning_area": "Mathematics",
+    "lessons_per_week": 5,
+    "minutes_per_lesson": 40,
+    "source": "Sample built from the 2026 Term I scheme pattern (one double + three singles per week); school to confirm actual slots",
+    "slots": [
+      {"day": "Monday", "from": "08:00", "to": "09:20", "lessons": [1, 2], "kind": "double"},
+      {"day": "Tuesday", "from": "11:20", "to": "12:00", "lessons": [3], "kind": "single"},
+      {"day": "Wednesday", "from": "08:00", "to": "08:40", "lessons": [4], "kind": "single"},
+      {"day": "Thursday", "from": null, "to": null, "lessons": [], "kind": "none"},
+      {"day": "Friday", "from": "14:00", "to": "14:40", "lessons": [5], "kind": "single"}
+    ]
+  }
+}

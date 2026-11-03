@@ -1,0 +1,11 @@
+{
+  "id": "math-level-8-scheme",
+  "subject": "mathematics",
+  "level": 8,
+  "term": 1,
+  "pack": "grade8-mathematics-term1",
+  "mode": "offline",
+  "objective": "Placeholder: runs once the Grade 8 pack lands (see EXPANSION.md).",
+  "script": [],
+  "expect": {}
+}

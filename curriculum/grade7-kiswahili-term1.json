@@ -1,0 +1,110 @@
+{
+  "pack": {
+    "id": "grade7-kiswahili-term1",
+    "learning_area": "Kiswahili",
+    "grade": 7,
+    "curriculum": "CBC",
+    "term": 1,
+    "version": "0.1.0-phase1"
+  },
+  "source": {
+    "title": "Junior School Curriculum Design: Kiswahili, Grade 7",
+    "edition": "As listed on the KICD Grade Seven designs portal",
+    "publisher": "Kenya Institute of Curriculum Development",
+    "portal": "https://kicd.ac.ke/cbc-materials/curriculum-designs/grade-seven-designs/"
+  },
+  "term": {
+    "weeks": 12,
+    "lessons_per_week": 5,
+    "note": "Working structure only: strand names and week ranges are provisional until confirmed against the official KICD design. All outcomes are pending_transcription; nothing here is quotable yet."
+  },
+  "strands": [
+    {
+      "id": "G7KIS-T1-S1",
+      "number": "1.0",
+      "name": "LUGHA",
+      "sub_strands": [
+        {
+          "id": "G7KIS-T1-1.1",
+          "name": "Kusikiliza na Kuzungumza",
+          "week_range": [
+            1,
+            5
+          ],
+          "outcomes": [
+            {
+              "id": "G7KIS-T1-1.1.1",
+              "outcome_text": "TODO_TRANSCRIBE",
+              "source_ref": "KICD Kiswahili G7 design, Strand 1.0 LUGHA, sub-strand Kusikiliza na Kuzungumza",
+              "status": "pending_transcription"
+            }
+          ]
+        },
+        {
+          "id": "G7KIS-T1-1.2",
+          "name": "Kusoma",
+          "week_range": [
+            5,
+            7
+          ],
+          "outcomes": [
+            {
+              "id": "G7KIS-T1-1.2.1",
+              "outcome_text": "TODO_TRANSCRIBE",
+              "source_ref": "KICD Kiswahili G7 design, Strand 1.0 LUGHA, sub-strand Kusoma",
+              "status": "pending_transcription"
+            }
+          ]
+        },
+        {
+          "id": "G7KIS-T1-1.3",
+          "name": "Sarufi",
+          "week_range": [
+            7,
+            9
+          ],
+          "outcomes": [
+            {
+              "id": "G7KIS-T1-1.3.1",
+              "outcome_text": "TODO_TRANSCRIBE",
+              "source_ref": "KICD Kiswahili G7 design, Strand 1.0 LUGHA, sub-strand Sarufi",
+              "status": "pending_transcription"
+            }
+          ]
+        },
+        {
+          "id": "G7KIS-T1-1.4",
+          "name": "Kuandika",
+          "week_range": [
+            10,
+            11
+          ],
+          "outcomes": [
+            {
+              "id": "G7KIS-T1-1.4.1",
+              "outcome_text": "TODO_TRANSCRIBE",
+              "source_ref": "KICD Kiswahili G7 design, Strand 1.0 LUGHA, sub-strand Kuandika",
+              "status": "pending_transcription"
+            }
+          ]
+        },
+        {
+          "id": "G7KIS-T1-1.5",
+          "name": "Ufahamu",
+          "week_range": [
+            11,
+            12
+          ],
+          "outcomes": [
+            {
+              "id": "G7KIS-T1-1.5.1",
+              "outcome_text": "TODO_TRANSCRIBE",
+              "source_ref": "KICD Kiswahili G7 design, Strand 1.0 LUGHA, sub-strand Ufahamu",
+              "status": "pending_transcription"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

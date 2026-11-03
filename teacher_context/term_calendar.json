@@ -1,0 +1,29 @@
+{
+  "calendar": {
+    "id": "kenya-2026-term1",
+    "year": 2026,
+    "term": 1,
+    "source": "Ministry of Education circular of 9 Oct 2025 (via press mirrors); school to confirm",
+    "opens": "2026-01-05",
+    "closes": "2026-04-02",
+    "total_weeks": 13,
+    "half_term": {"from": "2026-02-25", "to": "2026-03-01", "days": 5},
+    "note_opening_day": "Mirrors disagree 5th vs 6th Jan; 5 Jan 2026 is the Monday and matches the PS circular reporting. Confirm with the school.",
+    "pack_weeks": "Pack weeks 1-12 map to term weeks 1-7 and 9-13; term week 8 is half-term (Mon-Tue catch-up, Wed-Fri break)."
+  },
+  "weeks": [
+    {"term_week": 1, "from": "2026-01-05", "to": "2026-01-09", "type": "teaching", "pack_week": 1},
+    {"term_week": 2, "from": "2026-01-12", "to": "2026-01-16", "type": "teaching", "pack_week": 2},
+    {"term_week": 3, "from": "2026-01-19", "to": "2026-01-23", "type": "teaching", "pack_week": 3},
+    {"term_week": 4, "from": "2026-01-26", "to": "2026-01-30", "type": "teaching", "pack_week": 4},
+    {"term_week": 5, "from": "2026-02-02", "to": "2026-02-06", "type": "teaching", "pack_week": 5},
+    {"term_week": 6, "from": "2026-02-09", "to": "2026-02-13", "type": "teaching", "pack_week": 6},
+    {"term_week": 7, "from": "2026-02-16", "to": "2026-02-20", "type": "teaching", "pack_week": 7},
+    {"term_week": 8, "from": "2026-02-23", "to": "2026-02-27", "type": "half_term", "pack_week": null, "note": "School Mon-Tue only (catch-up); break Wed 25 Feb - Sun 1 Mar"},
+    {"term_week": 9, "from": "2026-03-02", "to": "2026-03-06", "type": "teaching", "pack_week": 8},
+    {"term_week": 10, "from": "2026-03-09", "to": "2026-03-13", "type": "teaching", "pack_week": 9},
+    {"term_week": 11, "from": "2026-03-16", "to": "2026-03-20", "type": "teaching", "pack_week": 10},
+    {"term_week": 12, "from": "2026-03-23", "to": "2026-03-27", "type": "teaching", "pack_week": 11},
+    {"term_week": 13, "from": "2026-03-30", "to": "2026-04-02", "type": "teaching", "pack_week": 12, "note": "Four-day week; term closes Thu 2 Apr"}
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "pack": {
+    "id": "test-pack-french",
+    "learning_area": "French",
+    "grade": 7,
+    "curriculum": "CBC",
+    "term": 1,
+    "version": "0.0-test"
+  },
+  "source": {
+    "title": "Test design",
+    "edition": "test",
+    "publisher": "Kenya Institute of Curriculum Development"
+  },
+  "term": {
+    "weeks": 4,
+    "lessons_per_week": 5
+  },
+  "strands": [
+    {
+      "id": "S1",
+      "number": "1.0",
+      "name": "TEST",
+      "sub_strands": [
+        {
+          "id": "FRE-T-1.1",
+          "name": "Ecoute et Parole",
+          "week_range": [
+            1,
+            2
+          ],
+          "outcomes": [
+            {
+              "id": "FRE-T-1.1.1",
+              "outcome_text": "Learners greet each other in French at the start of class.",
+              "source_ref": "test",
+              "status": "transcribed"
+            },
+            {
+              "id": "FRE-T-1.1.2",
+              "outcome_text": "TODO_TRANSCRIBE",
+              "source_ref": "test",
+              "status": "pending_transcription"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

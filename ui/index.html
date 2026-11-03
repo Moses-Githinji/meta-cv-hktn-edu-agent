@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Education Agent Console</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root { --bg:#f5f6f8; --panel:#fff; --ink:#1c1e21; --muted:#65676b; --line:#e4e6eb; --blue:#0866ff; --green:#1a7f37; --green-bg:#e6f4ea;
+          --red:#c62828; --red-bg:#fce8e6; --amber:#a15c00; --amber-bg:#fef3e0; --violet:#6b3fd1; --violet-bg:#f0eafd; --gray-bg:#f0f2f5; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; color:var(--ink); background:var(--bg); }
+  header { display:flex; align-items:center; gap:10px; padding:9px 16px; background:#1c2b33; color:#fff; position:sticky; top:0; z-index:5; flex-wrap:wrap; }
+  header h1 { font-size:16px; margin:0 6px 0 0; font-weight:600; }
+  header input[type=number] { width:56px; padding:5px 6px; border-radius:6px; border:0; }
+  header label { color:#cfd6db; font-size:13px; display:flex; gap:5px; align-items:center; }
+  .spacer { flex:1; }
+  button { font:inherit; padding:6px 12px; border-radius:6px; border:1px solid var(--line); background:#fff; cursor:pointer; }
+  button.primary { background:var(--blue); border-color:var(--blue); color:#fff; } button.warn { background:var(--amber); border-color:var(--amber); color:#fff; }
+  button.ok { background:var(--green); border-color:var(--green); color:#fff; } button.danger { background:var(--red); border-color:var(--red); color:#fff; }
+  button:disabled { opacity:.45; cursor:default; }
+  .badge { display:inline-block; padding:1px 8px; border-radius:10px; font-size:12px; font-weight:600; background:var(--gray-bg); color:var(--muted); white-space:nowrap; }
+  .s-running{background:#e7f0ff;color:var(--blue)} .s-needs_input,.s-escalated{background:var(--amber-bg);color:var(--amber)} .s-awaiting_signoff,.s-awaiting_hod{background:var(--violet-bg);color:var(--violet)}
+  .s-done,.s-proven,.s-approved{background:var(--green-bg);color:var(--green)} .s-answered,.s-unverified{background:#fff4d6;color:#7a5b00} .s-paused,.s-open{background:var(--gray-bg);color:var(--muted)}
+  .s-rejected,.s-error{background:var(--red-bg);color:var(--red)}
+  main { display:grid; grid-template-columns:270px minmax(0,1fr) 380px; gap:14px; padding:14px 16px; align-items:start; }
+  main > aside { position:sticky; top:62px; max-height:calc(100vh - 76px); overflow:auto; }
+  .panel { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-bottom:14px; }
+  .panel h2 { font-size:12.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); margin:0 0 8px; display:flex; justify-content:space-between; align-items:center; gap:6px; }
+  .muted{color:var(--muted)} .small{font-size:12px}
+  .metrics { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-top:10px; }
+  .metric { background:var(--gray-bg); border-radius:8px; padding:5px 9px; } .metric b{display:block;font-size:16px} .metric span{font-size:11px;color:var(--muted)}
+  .card-amber { border:2px solid var(--amber); background:var(--amber-bg); } .card-amber h2{color:var(--amber)}
+  .card-violet { border:2px solid var(--violet); background:var(--violet-bg); } .card-violet h2{color:var(--violet)}
+  .card-green { border:2px solid var(--green); background:var(--green-bg); } .card-green h2{color:var(--green)}
+  .card-yellow { border:2px solid #d6a700; background:#fffbea; } .card-yellow h2{color:#7a5b00}
+  .need { font-size:15px; font-weight:600; margin:4px 0 8px; }
+  .kv { display:grid; grid-template-columns:130px 1fr; gap:3px 10px; font-size:12.5px; margin:6px 0 10px; } .kv b{color:var(--muted);font-weight:600}
+  .steps { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  textarea { width:100%; font:inherit; font-size:13px; padding:6px 8px; border-radius:6px; border:1px solid var(--line); min-height:52px; resize:vertical; }
+  #timeline { max-height:calc(100vh - 300px); min-height:240px; overflow:auto; padding-right:4px; }
+  .tb { border:1px solid var(--line); border-radius:8px; margin-bottom:8px; background:#fff; overflow:hidden; }
+  .tb-head { display:flex; justify-content:space-between; align-items:baseline; gap:8px; padding:4px 10px; background:#f7f8fa; border-bottom:1px solid var(--line); font-size:12px; cursor:pointer; }
+  .tb-head:hover { background:#eef2f7; } .tb-head b { font-size:12.5px; } .tb-head .why { color:var(--blue); white-space:nowrap; }
+  .r { display:grid; grid-template-columns:70px 1fr auto; gap:8px; padding:5px 10px; align-items:baseline; font-size:13px; border-top:1px solid #f0f2f5; }
+  .r:first-of-type { border-top:0; } .r .t { font-weight:600; } .r .d { color:var(--muted); font-size:12.5px; word-break:break-word; } .r .rt { font-size:11.5px; color:var(--muted); white-space:nowrap; }
+  .r.k-ok { background:var(--green-bg); } .r.k-bad { background:var(--red-bg); } .r.k-esc { background:var(--amber-bg); } .r.k-sig { background:var(--violet-bg); }
+  .r.sys { grid-template-columns:1fr auto; background:#f7f8fa; } .r.sys .t { font-weight:600; }
+  .chip { font-size:10.5px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; padding:2px 0; border-radius:4px; text-align:center; }
+  .ph-plan { background:#efeefe; color:#4b4fd1; } .ph-act { background:#e7f0ff; color:var(--blue); } .ph-observe { background:#e6f4ea; color:var(--green); }
+  .toggle { color:var(--blue); cursor:pointer; font-size:11.5px; white-space:nowrap; }
+  .subs { padding:2px 10px 7px 88px; font-size:12px; color:var(--muted); } .subs div { padding:1px 0; }
+  .waiting { color:var(--muted); font-style:italic; font-weight:400 !important; }
+  pre { background:#1c2b33; color:#e4e6eb; padding:10px; border-radius:8px; overflow:auto; font-size:12px; max-height:360px; white-space:pre-wrap; margin:6px 0 0; grid-column:1/-1; }
+  .item { border-top:1px solid var(--line); padding:7px 0; } .item:first-of-type{border-top:0}
+  .item .head { display:flex; justify-content:space-between; gap:6px; align-items:center; font-weight:600; font-size:13px; }
+  .ck-q { font-size:12.5px; margin:2px 0 0; } .ck-e { font-size:11.5px; color:var(--muted); margin:1px 0 2px; }
+  .ck-tags { display:flex; gap:4px; flex-wrap:wrap; margin-top:3px; } .ck-tags .badge { font-size:10.5px; padding:0 6px; }
+  .ck-cov { font-size:12px; margin:-2px 0 8px; padding:5px 8px; border-radius:6px; }
+  .fact { font-size:12px; margin:4px 0 0 8px; } .fact .src{font-weight:600} .fact .q{font-style:italic}
+  .sig { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:6px; }
+  .sigbox { position:relative; border:1px solid var(--line); border-radius:6px; overflow:hidden; background:#fff; }
+  .sigbox img { width:100%; display:block; } .sigbox .bx { position:absolute; border:2px solid var(--violet); background:rgba(107,63,209,.12); }
+  .sigbox .cap { font-size:11px; padding:3px 6px; background:#fafafa; border-top:1px solid var(--line); }
+  table.score { width:100%; border-collapse:collapse; font-size:12.5px; } table.score td{border-top:1px solid var(--line);padding:4px 6px;vertical-align:top}
+  .pass{color:var(--green);font-weight:700} .fail{color:var(--red);font-weight:700}
+  .finding { border-top:1px solid rgba(0,0,0,.07); padding:6px 0; font-size:12.5px; }
+  .finding.clickable { cursor:pointer; } .finding.clickable:hover { background:rgba(0,0,0,.03); }
+  ul.gaps { margin:4px 0 0 18px; padding:0; } ul.gaps li { margin:2px 0; }
+  @keyframes flash { from { box-shadow:0 0 0 3px var(--accent, #1f6feb); } to { box-shadow:0 0 0 0 transparent; } }
+  #checklist .item.flash { animation: flash 1.6s ease-out; }
+  .empty { color:var(--muted); padding:26px; text-align:center; }
+  .toast { position:fixed; bottom:18px; left:50%; transform:translateX(-50%); background:#1c2b33; color:#fff; padding:9px 16px; border-radius:8px; display:none; z-index:9; max-width:80vw; }
+  .toast.err{background:var(--red)}
+  .vstatus { display:flex; align-items:center; gap:8px; margin:8px 0 2px; padding:7px 10px; border-radius:6px; background:var(--gray-bg); font-size:13px; }
+  .vstatus.err { background:var(--red-bg); color:var(--red); }
+  .spinner { width:14px; height:14px; border:2px solid #c9d1d9; border-top-color:var(--accent, #1f6feb); border-radius:50%; animation:spin .8s linear infinite; flex:none; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .vresult { margin-top:8px; padding:6px 8px; border-radius:6px; }
+  .vresult.fresh { animation: flash 2.4s ease-out; }
+  .vresult .when { color:var(--muted); font-size:12px; font-weight:normal; }
+  dialog { width:min(900px,90vw); border:0; border-radius:10px; padding:14px; } dialog pre{max-height:70vh}
+  a.file { color:var(--blue); cursor:pointer; text-decoration:underline; margin-right:10px; font-size:12px; }
+  select { font:inherit; font-size:12px; padding:3px; max-width:100%; }
+  header .case-pick select { font-size:13px; padding:4px 8px; border-radius:6px; border:0; background:#fff; color:var(--ink); max-width:360px; cursor:pointer; }
+  header .case-pick select:disabled { opacity:.6; cursor:default; }
+  .stepbar { margin:0 0 10px; padding:8px 10px; border-radius:8px; background:#e7f0ff; display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-size:13px; }
+  .assignment { padding:0; overflow:hidden; }
+  .assignment > summary { list-style:none; display:flex; align-items:center; gap:10px; padding:10px 16px; cursor:pointer; user-select:none;
+                          background:linear-gradient(180deg,#f9fafc,#f2f4f8); border-bottom:1px solid var(--line); }
+  .assignment > summary::-webkit-details-marker { display:none; }
+  .assignment:not([open]) > summary { border-bottom:0; }
+  .assignment .a-icon { width:26px; height:26px; border-radius:7px; display:grid; place-items:center; background:#e7f0ff; color:var(--blue); font-size:14px; flex:none; }
+  .assignment .a-title { font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); }
+  .assignment .a-src { font-size:11.5px; color:var(--muted); background:#fff; border:1px solid var(--line); border-radius:999px; padding:1px 9px; white-space:nowrap; }
+  .assignment .a-src code { font:600 11px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--ink); }
+  .assignment .a-chev { margin-left:auto; color:var(--muted); font-size:12px; transition:transform .15s ease; }
+  .assignment[open] .a-chev { transform:rotate(90deg); }
+  .objective { color:var(--ink); font-size:14px; line-height:1.6; padding:16px 22px 18px; max-width:78ch; }
+  .objective > :first-child { margin-top:0; }
+  .objective > :last-child { margin-bottom:0; }
+  .objective h1,.objective h2,.objective h3,.objective h4,.objective h5,.objective h6 { color:var(--ink); line-height:1.3; margin:18px 0 8px; }
+  .objective h1 { font-size:20px; font-weight:700; letter-spacing:-.01em; margin:0 0 12px; }
+  .objective h2 { font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); padding-top:14px; border-top:1px solid var(--line); }
+  .objective h3 { font-size:14.5px; }
+  .objective p { margin:8px 0; }
+  .objective p.callout { margin:10px 0; padding:9px 13px; background:#f5f8fe; border-left:3px solid var(--blue); border-radius:0 8px 8px 0; }
+  .objective p.callout strong:first-child { display:block; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--blue); margin-bottom:1px; }
+  .objective ul { list-style:none; margin:6px 0; padding:0; }
+  .objective ul li { position:relative; padding:3px 0 3px 22px; }
+  .objective ul li::before { content:""; position:absolute; left:6px; top:.85em; width:6px; height:6px; border-radius:50%; background:var(--blue); opacity:.75; }
+  .objective ol { margin:6px 0; padding-left:24px; } .objective ol li { padding:2px 0; }
+  .objective blockquote { margin:10px 0; padding:4px 12px; border-left:3px solid var(--line); color:var(--muted); }
+  .objective code { background:var(--gray-bg); border-radius:4px; padding:1px 5px; font:12.5px ui-monospace,SFMono-Regular,Menlo,monospace; }
+  .objective pre code { background:none; padding:0; color:inherit; }
+  .objective a { color:var(--blue); }
+  .objective > p:last-child:not(.callout) { margin-top:14px; padding-top:10px; border-top:1px dashed var(--line); font-size:12.5px; color:var(--muted); }
+  .tool { border-top:1px solid var(--line); padding:6px 0; font-size:12px; } .tool:first-child { border-top:0; } .tool code { font-weight:600; font-size:12.5px; } .tool .muted { margin-top:2px; }
+  .saw { font-size:12.5px; } .saw .box { border:1px solid var(--line); border-radius:8px; padding:8px 10px; margin:6px 0; background:#fafbfc; }
+  .saw h3 { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin:10px 0 4px; }
+  /* ---- additions for the education agent ---- */
+  .s-awaiting_verification{background:#e7f0ff;color:var(--blue)} .s-verified{background:var(--green-bg);color:var(--green)} .s-failed{background:var(--red-bg);color:var(--red)}
+  .packbadge { font-size:11.5px; padding:2px 9px; border-radius:999px; background:rgba(255,255,255,.16); color:#fff; white-space:nowrap; }
+  .packbadge.warn { background:var(--amber); }
+  .cite-src { font-size:11.5px; margin:3px 0 0 8px; padding:4px 8px; border-left:3px solid var(--line); background:#fafbfc; color:var(--muted); }
+  .cite-src.ok { border-left-color:var(--green); } .cite-src.bad { border-left-color:var(--red); background:var(--red-bg); color:var(--red); }
+  .finding .head { display:flex; justify-content:space-between; gap:6px; align-items:center; margin-bottom:2px; }
+  .finding.unver { background:#fffbea; border-left:3px solid #d6a700; padding-left:8px; }
+  .finding.bad { background:var(--red-bg); border-left:3px solid var(--red); padding-left:8px; }
+  .ack { display:flex; gap:6px; align-items:flex-start; margin:6px 0 2px; font-size:12px; }
+  .fig { max-width:100%; border:1px solid var(--line); border-radius:6px; background:#fff; margin:6px 0 2px; }
+  .esc-item { border-top:1px solid var(--line); padding:6px 0; font-size:12.5px; } .esc-item:first-child { border-top:0; }
+  .code-badge { font:600 10.5px ui-monospace,SFMono-Regular,Menlo,monospace; padding:1px 6px; border-radius:4px; background:var(--amber-bg); color:var(--amber); }
+  .audit-table { width:100%; border-collapse:collapse; font-size:12px; } .audit-table td { border-top:1px solid var(--line); padding:3px 6px; vertical-align:top; word-break:break-word; }
+  .saw .box.k-bad { background:var(--red-bg); } .saw .box.k-ok { background:var(--green-bg); } .saw .box.k-esc, .saw .box.k-sig { background:var(--amber-bg); }
+  .hint { font-size:12px; color:var(--muted); margin-top:6px; }
+  .doctabs { display:flex; gap:6px; align-items:center; margin:8px 0; flex-wrap:wrap; }
+  .doctabs button.on { background:var(--blue); border-color:var(--blue); color:#fff; }
+  .docpdf { width:100%; height:60vh; border:1px solid var(--line); border-radius:8px; background:#fff; }
+  .dochead { font-size:13px; margin:2px 0 6px; }
+  .docform label { font-size:12px; color:var(--muted); font-weight:600; display:block; margin-top:6px; }
+  .docform input[type=text] { width:100%; font:inherit; font-size:13px; padding:6px 8px; border-radius:6px; border:1px solid var(--line); margin:3px 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Education Agent Console</h1>
+  <label class="case-pick" title="The teaching pack the agent works on (packs/ folder)">Task <select id="taskSel" onchange="selectTask(this.value)"><option>…</option></select></label>
+  <span id="packBadge" class="packbadge" title="The curriculum pack the agent reads"></span>
+  <div class="spacer"></div>
+  <label title="Pause before every turn; click Next turn to continue"><input id="step" type="checkbox"> Step through turns</label>
+  <label>Turns <input id="turns" type="number" min="1" max="200" value="30"></label>
+  <button class="primary" id="startBtn" onclick="startRun()">▶ Start agent</button>
+  <button id="resetBtn" onclick="resetWorkspace()">Reset</button>
+</header>
+
+<main>
+  <aside>
+    <div class="panel"><h2>Tools Available</h2><div id="tools"><div class="muted small">Loading tools…</div></div></div>
+    <div class="panel"><h2>Curriculum pack</h2><div id="packinfo" class="small muted">—</div></div>
+  </aside>
+
+  <section>
+    <details class="panel assignment" id="briefPanel" open>
+      <summary><span class="a-icon">📋</span><span class="a-title">The agent's assignment</span><span class="a-src">read from <code id="objSrc">objective.md</code></span><span class="a-chev">▶</span></summary>
+      <div id="brief" class="objective"><div class="muted small">Loading objective…</div></div>
+    </details>
+    <div id="cards"></div>
+    <div class="panel"><h2>Timeline <span class="small muted" style="text-transform:none;letter-spacing:0">click a turn to see what the model saw</span></h2>
+      <div id="stepbar"></div>
+      <div id="timeline"><div class="empty">Each turn appears here as Plan → Act → Observe.</div></div></div>
+    <div class="panel" id="runhead"><div class="muted small">No runs yet</div></div>
+  </section>
+
+  <aside>
+    <div class="panel"><h2>Checklist <span id="ckcount" class="badge"></span></h2><div id="checklist"><div class="muted small">—</div></div></div>
+    <div class="panel"><h2>Escalations <span id="esccount" class="badge"></span></h2><div id="escalations"><div class="muted small">Nothing escalated.</div></div></div>
+    <div class="panel"><h2>Plan</h2><ol id="plan" style="padding-left:18px;margin:0" class="small"><li class="muted">No plan yet</li></ol></div>
+    <div class="panel"><h2>Agent state</h2><div id="stateinfo" class="small muted">—</div><div style="margin-top:6px"><a class="file" onclick="showRaw('state')">Raw state</a><a class="file" onclick="showRaw('record')">Raw record</a><a class="file" id="auditLink" onclick="showAudit()" style="display:none">Audit log</a></div></div>
+  </aside>
+</main>
+
+<dialog id="dlg"><div style="display:flex;justify-content:space-between;align-items:center"><b id="dlgTitle"></b><button onclick="dlg.close()">Close</button></div><div id="dlgBody"></div></dialog>
+<div class="toast" id="toast"></div>
+
+<script>
+let selected = null, events = [], detail = null, info = {}, autoFollow = null, knownRuns = new Set(), polling = false;
+let verifyBusy = null, verifyError = null, verifyFresh = null;
+window._open = new Set(); window._acks = {}; window._notes = {}; window._outcomes = {}; window._lastVerify = {};
+const shownFailures = new Set();
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const short = (s, n = 140) => { s = String(s ?? ""); return s.length > n ? s.slice(0, n) + "…" : s; };
+const time = ts => ts ? new Date(ts).toLocaleTimeString([], {hour:"2-digit", minute:"2-digit", second:"2-digit"}) : "";
+const asList = v => Array.isArray(v) ? v : (v && typeof v === "object" ? Object.values(v) : (v == null || v === "" ? [] : [v]));
+const idsOf = v => Array.isArray(v) ? v.map(x => (x && typeof x === "object") ? (x.id ?? x.name ?? JSON.stringify(x)) : x) : (v && typeof v === "object" ? Object.keys(v) : []);
+const txt = v => v == null ? "" : (typeof v === "string" ? v : (typeof v === "number" || typeof v === "boolean" ? String(v) : JSON.stringify(v)));
+const itemLabel = id => { const t = String(id ?? "").replace(/_/g, " "); return t.charAt(0).toUpperCase() + t.slice(1); };
+function inlineMarkdown(value) {
+  const code = [], links = [];
+  let html = esc(value).replace(/`([^`\n]+)`/g, (_, text) => `@@CODE${code.push(text) - 1}@@`);
+  html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_, label, url) => `@@LINK${links.push({label, url}) - 1}@@`);
+  html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>").replace(/__([^_]+)__/g, "<strong>$1</strong>");
+  html = html.replace(/(^|[^*])\*([^*]+)\*/g, "$1<em>$2</em>").replace(/(^|[^_])_([^_]+)_/g, "$1<em>$2</em>");
+  html = html.replace(/@@CODE(\d+)@@/g, (_, i) => `<code>${code[+i]}</code>`);
+  return html.replace(/@@LINK(\d+)@@/g, (_, i) => `<a href="${links[+i].url}" target="_blank" rel="noopener noreferrer">${links[+i].label}</a>`);
+}
+function renderMarkdown(value) {
+  const lines = String(value ?? "").replace(/\r\n?/g, "\n").split("\n");
+  const out = [];
+  let paragraph = [], list = null;
+  const flushParagraph = () => {
+    if (!paragraph.length) return;
+    const html = inlineMarkdown(paragraph.join(" "));
+    // A paragraph that opens with a bold label ("**The question:** …") reads as a callout.
+    out.push(/^<strong>[^<]{1,40}:<\/strong>/.test(html) ? `<p class="callout">${html}</p>` : `<p>${html}</p>`);
+    paragraph = [];
+  };
+  const closeList = () => { if (list) { out.push(`</${list}>`); list = null; } };
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (/^```/.test(line)) {
+      flushParagraph(); closeList();
+      const block = [];
+      for (i += 1; i < lines.length && !/^```/.test(lines[i]); i++) block.push(lines[i]);
+      out.push(`<pre><code>${esc(block.join("\n"))}</code></pre>`);
+      continue;
+    }
+    const heading = line.match(/^(#{1,6})\s+(.+)$/);
+    if (heading) { flushParagraph(); closeList(); const level = heading[1].length; out.push(`<h${level}>${inlineMarkdown(heading[2])}</h${level}>`); continue; }
+    const bullet = line.match(/^\s*[-*+]\s+(.+)$/), numbered = line.match(/^\s*\d+[.)]\s+(.+)$/);
+    if (bullet || numbered) {
+      flushParagraph(); const next = bullet ? "ul" : "ol";
+      if (list !== next) { closeList(); out.push(`<${next}>`); list = next; }
+      out.push(`<li>${inlineMarkdown((bullet || numbered)[1])}</li>`);
+      continue;
+    }
+    const quote = line.match(/^>\s?(.*)$/);
+    if (quote) { flushParagraph(); closeList(); out.push(`<blockquote>${inlineMarkdown(quote[1])}</blockquote>`); continue; }
+    if (!line.trim()) { flushParagraph(); closeList(); continue; }
+    closeList(); paragraph.push(line.trim());
+  }
+  flushParagraph(); closeList();
+  return out.join("");
+}
+
+async function api(path, body) {
+  const opt = body === undefined ? {} : {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)};
+  const r = await fetch(path, opt); const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || r.statusText); return j;
+}
+
+function toast(m, err) { const t = $("toast"); t.textContent = m; t.className = "toast" + (err ? " err" : ""); t.style.display = "block"; clearTimeout(t._h); t._h = setTimeout(() => t.style.display = "none", 4500); }
+const pct = v => typeof v === "number" ? `${Math.round(v * 100)}%` : "—";
+const setHtml = (el, html) => { if (el._html === html) return false; el._html = html; el.innerHTML = html; return true; };
+const norm = s => String(s ?? "").normalize("NFKC").toLowerCase().replace(/[\u2018\u2019]/g, "'").replace(/[\u201c\u201d]/g, '"').replace(/\s+/g, " ").trim();
+
+// Tool and field names changed when the legal agent became a teaching agent; accept both.
+const CITE = new Set(["cite_outcome", "record_fact"]);
+const SUBMIT = new Set(["submit_document", "submit_memo"]);
+const ASK = new Set(["ask_teacher", "request_evidence"]);
+const DOC_WHATS = [["scheme", "Scheme"], ["exam", "Exam"], ["marking-scheme", "Marking scheme"], ["lesson-plan", "Lesson plan"]];
+const citationsOf = rec => (rec && (rec.citations || rec.facts)) || [];
+const documentOf = rec => rec && (rec.document || rec.memo);
+const docRows = doc => asList(doc && (doc.rows || doc.findings)).filter(f => f && typeof f === "object");
+const openEscalations = rec => ((rec && rec.escalations) || []).filter(e => !["resolved", "closed"].includes(String(e.status)));
+const acksFor = () => (window._acks[selected] = window._acks[selected] || new Set());
+function rowState(r, openItems) {
+  const s = String(r.status || "").toLowerCase();
+  if (["failed", "rejected"].includes(s)) return "failed";
+  if (["unverified", "escalated", "not_proven", "needs_review"].includes(s) || openItems.has(r.item)) return "unverified";
+  return "verified";
+}
+function unverifiedItems(doc, rec) {
+  const open = new Set(openEscalations(rec).map(e => e.item));
+  return docRows(doc).filter(r => rowState(r, open) === "unverified").map(r => String(r.item));
+}
+
+// ---------- actions ----------
+async function startRun() {
+  try {
+    knownRuns = new Set((window._runs || []).map(r => r.id));
+    await api("/api/runs", {turns: +$("turns").value || 30, step: $("step").checked});
+    autoFollow = "new"; toast("Agent started"); poll();
+  } catch (e) { toast(e.message, true); }
+}
+async function resumeRun(turns = 15) {
+  try { await api(`/api/runs/${selected}/resume`, {turns, step: $("step").checked}); toast("Resuming the same run"); poll(); }
+  catch (e) { toast(e.message, true); }
+}
+async function selectTask(id) {
+  const target = (info.tasks || []).find(t => t.id === id), current = (info.tasks || []).find(t => t.path === info.task);
+  if (!target || (current && current.id === id)) return;
+  try { info = await api("/api/task", {task: id}); selected = null; window._picked = false; window._briefKey = null; toast(`Task: ${target.title}`); poll(); }
+  catch (e) { toast(e.message, true); renderTasks(true); }
+}
+function renderTasks(force) {
+  const sel = $("taskSel"), tasks = info.tasks || [];
+  const key = JSON.stringify([tasks, info.task]);
+  if (!force && window._tasksKey === key) return;
+  if (!force && document.activeElement === sel) return;
+  window._tasksKey = key;
+  const inList = tasks.some(t => t.path === info.task);
+  sel.innerHTML = tasks.map(t => `<option value="${esc(t.id)}" ${t.path === info.task ? "selected" : ""}>${esc(t.title)}</option>`).join("")
+    + (inList ? "" : `<option selected disabled>${esc(info.task || "no task folder")}</option>`);
+  $("objSrc").textContent = `${info.task}/objective.md`;
+}
+function renderPack() {
+  const pk = info.pack || {}, files = pk.files || [];
+  const badge = $("packBadge");
+  badge.textContent = pk.version ? `Pack ${pk.version}` : "No curriculum pack";
+  badge.className = "packbadge" + (pk.version ? "" : " warn");
+  setHtml($("packinfo"), pk.version
+    ? `<div><b>Version</b>: <code>${esc(pk.version)}</code></div><div><b>Files</b>: ${files.map(f => `<code>${esc(f)}</code>`).join(", ")}</div><div class="muted" style="margin-top:4px">Every citation below is shown beside its official text from these files.</div>`
+    : `No <code>curriculum/*.json</code> yet, so citations cannot be shown beside their official text.`);
+}
+async function verifyRun(what) {
+  verifyBusy = {what, run: selected}; verifyError = null; renderCards();
+  try { const r = await api(`/api/runs/${selected}/verify`, {what}); verifyFresh = {run: selected, what}; (window._lastVerify = window._lastVerify || {})[selected] = Object.assign({what}, r); toast(`${itemLabel(what)} check done: ${r.passed ? "passes" : "fails"}`, !r.passed); }
+  catch (e) { verifyError = {run: selected, message: e.message}; toast(e.message, true); }
+  finally { verifyBusy = null; }
+  poll();
+}
+async function review(decision) {
+  const notes = ($("signoffNotes") || {}).value || window._notes.signoff || "";
+  if (decision === "reject" && !notes.trim()) { toast("Say what needs to change: the agent reads your notes.", true); return; }
+  try {
+    const r = await api(`/api/runs/${selected}/review`, {decision, notes, acknowledged: [...acksFor()]});
+    window._notes.signoff = ""; toast(r.message || (decision === "approve" ? "Approved" : "Sent back to the agent")); poll();
+  } catch (e) { toast(e.message, true); }
+}
+function toggleAck(id, on) { const s = acksFor(); on ? s.add(id) : s.delete(id); renderCards(); }
+const ANSWER_SUGGESTIONS = [
+  "Official wording is not available yet; do not invent outcome text. Proceed with what the pack has and list every untranscribed outcome as a gap.",
+  "I am adding the official wording to the curriculum pack now. After I resume, re-read the outcome and continue.",
+];
+function fillAnswer(i) {
+  window._notes.answer = ANSWER_SUGGESTIONS[i] || "";
+  const box = $("answerNotes");
+  if (box) { box.value = window._notes.answer; box.focus(); }
+}
+async function answerRequest(requestId) {
+  const notes = ($("answerNotes") || {}).value || window._notes.answer || "";
+  if (!notes.trim()) { toast("Type your answer first.", true); return; }
+  try { await api(`/api/runs/${selected}/review`, {decision: "answer", notes, request_id: requestId}); window._notes.answer = ""; await resumeRun(15); }
+  catch (e) { toast(e.message, true); }
+}
+async function resetWorkspace() {
+  if (!confirm("Reset the agent workspace? Runs are kept.")) return;
+  try { const r = await api("/api/reset", {clear_runs: false}); toast(r.message || "Workspace reset"); poll(); } catch (e) { toast(e.message, true); }
+}
+async function nextTurn() { try { await api("/api/control", {next: true}); } catch (e) { toast(e.message, true); } }
+async function runToEnd() { try { await api("/api/control", {step: false}); $("step").checked = false; } catch (e) { toast(e.message, true); } }
+async function loadBrief() {
+  try {
+    const b = await api("/api/describe"); window._brief = b;
+    $("brief").innerHTML = renderMarkdown(b.objective);
+    $("tools").innerHTML = (b.tools || []).length
+      ? b.tools.map(t => `<div class="tool"><code>${esc(t.name)}</code><span class="muted">(${esc(asList(t.parameters).map(p => typeof p === "string" ? p : (p && p.name) || "").join(", "))})</span><div class="muted">${esc(short(t.description, 150))}</div></div>`).join("")
+      : `<div class="muted small">${b.tools_error ? "Tool list unavailable: " + esc(short(b.tools_error, 160)) : "The agent reports no tools yet."}</div>`;
+  } catch (e) { $("brief").textContent = e.message; }
+}
+function select(id) {
+  if (!id) return;
+  selected = id; events = []; detail = null; window._open = new Set(); window._tlKey = null; window._lastHead = null;
+  $("timeline").innerHTML = ""; $("timeline")._html = null; loadDetail();
+}
+
+// ---------- the timeline ----------
+function describe(ev) {
+  const p = ev.payload || {}, k = ev.event_type;
+  switch (k) {
+    case "run_started": return {c: "k-run", i: "▶", t: p.resumed ? "Run resumed (same run)" : "Run started", d: p.verification ? "Checks on" : "Checks off"};
+    case "model_request": return {c: "k-tool minor", i: "◆", t: p.pending ? "Working on this turn…" : "Agent planning", d: `Turn ${p.turn ?? ""}`};
+    case "model_response": return {c: "k-tool minor", i: "◆", t: "Model responded", d: [(p.input_tokens || p.output_tokens) ? `${p.input_tokens || 0} in / ${p.output_tokens || 0} out` : "", p.model || ""].filter(Boolean).join(" · ")};
+    case "tool_call": {
+      const a = (p.arguments && typeof p.arguments === "object") ? p.arguments : {}, n = p.tool_name;
+      let d = "";
+      if (CITE.has(n)) d = `${txt(a.item)} ← ${txt(a.outcome_id ?? a.document_id)}${a.page != null ? " p" + txt(a.page) : ""}: “${short(txt(a.quote), 110)}”`;
+      else if (n === "read_curriculum") d = txt(a.id ?? a.sub_strand_id ?? a.outcome_id ?? JSON.stringify(a));
+      else if (n === "list_curriculum") d = [a.level, a.subject].filter(Boolean).map(txt).join(" · ") || "the whole pack";
+      else if (n === "set_checklist") d = `${asList(a.items).length} items: ${idsOf(a.items).map(txt).join(", ")}`;
+      else if (ASK.has(n)) d = `${txt(a.item)}: ${short(txt(a.need ?? a.question), 140)}`;
+      else if (n === "escalate") d = `${txt(a.item)} · ${txt(a.reason_code)}: ${short(txt(a.need ?? a.what_is_needed), 120)}`;
+      else if (SUBMIT.has(n)) d = short(txt(a.title ?? a.conclusion ?? a.kind), 140);
+      else if (n === "update_plan") d = `${asList(a.plan).length} steps`;
+      else if (n === "make_diagram" || n === "check_diagram") d = [txt((a.spec || {}).kind), txt((a.spec || {}).title)].filter(Boolean).join(" · ") || short(txt(a.spec ?? ""), 120);
+      else if (n === "check_answers") d = `${asList(a.questions).length} answers to check`;
+      else d = short(JSON.stringify(a), 140);
+      return {c: "k-call", i: "⚙", t: `Calls ${n}`, d};
+    }
+    case "tool_result": {
+      const r = p.result || {}, n = p.tool_name;
+      if (r.error && n === "set_checklist" && r.feedback !== undefined) return {c: "k-bad", i: "↩", t: "Checklist refused: feedback returned to the agent", d: short(txt(r.feedback), 240)};
+      if (r.error && SUBMIT.has(n)) return {c: "k-bad minor", i: "↩", t: `Document refused by the ${r.check === "claims" ? "claims check" : "document rules"}: problems returned to the agent`, d: ""};
+      if (r.error && CITE.has(n)) return {c: "k-bad minor", i: "↩", t: "Citation refused: returned to the agent to correct", d: short(txt(r.error), 200)};
+      if (r.error) return {c: "k-bad", i: "✕", t: `${n} refused`, d: short(txt(r.error), 240)};
+      if (r.escalated || r.escalation) return {c: "k-esc minor", i: "!", t: r.blocking === false ? "Escalation recorded; the run continues" : "Escalation recorded; run pauses", d: ""};
+      if (r.filed) return {c: r.status === "awaiting_signoff" ? "k-ok" : "k-run", i: "■", t: r.status === "awaiting_signoff" ? "Document filed for teacher review" : (r.status === "awaiting_verification" ? "Document filed: waiting for the independent check" : "Document filed (unverified)"), d: ""};
+      if (r.recorded) return {c: "k-ok minor", i: "✓", t: typeof r.recorded === "object" ? `Citation ${txt(r.recorded.id)} recorded for ${txt(r.recorded.item)}` : "Citation recorded", d: ""};
+      if (r.plan) return {c: "k-result minor", i: "☰", t: "Plan updated", d: ""};
+      if (r.checklist) { const ids = idsOf(r.checklist); return {c: "k-ok minor", i: "☑", t: `Checklist set: ${ids.length} items`, d: ids.map(itemLabel).join(" · ")}; }
+      if (r.figure_id || r.figure) return {c: "k-result", i: "▣", t: `Figure ${txt(r.figure_id ?? (r.figure || {}).id ?? "")} ${r.verified === false ? "needs checking" : "rendered"}`, d: short(txt(r.note ?? r.reason ?? ""), 160)};
+      if (r.ok !== undefined) return {c: r.ok ? "k-ok" : "k-bad", i: r.ok ? "✓" : "✕", t: r.ok ? "Diagram spec is valid" : "Diagram spec has problems", d: short(asList(r.problems).map(txt).join(" · "), 200)};
+      if (r.value !== undefined || r.matches !== undefined) return {c: "k-result", i: "∑", t: r.matches === false ? "Answer does not match the computed value" : "Computed", d: short(JSON.stringify(r), 160)};
+      const lists = ["outcomes", "sub_strands", "strands", "entries"].map(x => asList(r[x])).find(l => l.length);
+      if (lists) return {c: "k-result", i: "▤", t: `Read ${lists.length} entr${lists.length === 1 ? "y" : "ies"} from the curriculum pack`, d: short(lists.slice(0, 3).map(x => txt(x && x.id)).join(", "), 120)};
+      return {c: "k-result", i: "←", t: `${n} result`, d: short(JSON.stringify(r), 200)};
+    }
+    case "verification":
+      if (p.check === "checklist") return p.passed ? {c: "k-ok", i: "✓", t: `Checklist check passed (coverage ${pct(p.score)})`, d: ""} : {c: p.accepted ? "k-esc" : "k-bad", i: "✕", t: `Checklist check failed (coverage ${pct(p.score)})${p.accepted ? `: accepted after ${p.attempt} tries` : ""}`, d: short(txt(p.feedback), 240)};
+      if (p.check === "claims") return p.passed ? {c: "k-ok", i: "✓", t: "Claims check passed: every row is supported by the outcomes it cites", d: ""} : {c: "k-bad", i: "✕", t: "Claims check failed", d: asList(p.problems).map(txt).join(" · ")};
+      return p.passed ? {c: "k-ok", i: "✓", t: "Document rules passed: coverage, citations and time budget", d: ""} : {c: "k-bad", i: "✕", t: "Document rules failed", d: asList(p.problems).map(txt).join(" · ")};
+    case "escalation":
+      if (p.rule === "teacher_signoff") return {c: "k-sig", i: "✍", t: "Waiting for teacher review", d: ""};
+      if (p.rule === "independent_check") return {c: "k-sig", i: "⛨", t: "Waiting for the independent check", d: ""};
+      return {c: "k-esc", i: "!", t: `Escalated to a person${p.rule ? " (" + p.rule + ")" : ""}${p.item ? " · " + p.item : ""}`, d: p.need};
+    case "state_snapshot": return null;
+    case "run_finished": return {c: p.status === "done" ? "k-ok" : (p.status === "needs_input" ? "k-esc" : (p.status === "awaiting_signoff" ? "k-sig" : "k-run")), i: "■", t: `Run stopped: ${p.status}`, d: ({needs_input: "Waiting for a person", paused: "Hit the turn limit or a model error", awaiting_signoff: "Document waiting for teacher review", awaiting_verification: "Waiting for the independent check", escalated: "Escalated", answered: "Document filed without checks", done: "Approved"})[p.status] || ""};
+    case "error": return {c: "k-bad", i: "✕", t: "Error", d: short(p.error, 240)};
+    default: return {c: "k-tool minor", i: "•", t: k, d: short(JSON.stringify(p), 140)};
+  }
+}
+const SYSTEM_EVENTS = new Set(["run_started", "run_finished"]);
+function buildBlocks(evs) {
+  const blocks = []; let cur = null;
+  for (const ev of evs) {
+    const k = ev.event_type, n = (ev.payload || {}).turn;
+    if (SYSTEM_EVENTS.has(k)) { blocks.push({sys: true, ev}); cur = null; continue; }
+    if (k === "model_request" && ev.actor === "agent") { cur = {turn: n, items: []}; blocks.push(cur); }
+    if (!cur) { cur = {turn: n ?? "", items: []}; blocks.push(cur); }
+    cur.items.push(ev);
+  }
+  return blocks;
+}
+function row(chip, cls, d, right = "", subs = "") {
+  if (!d) return "";
+  return `<div class="r ${d.c.replace("minor", "")}"><span class="chip ${cls}">${chip}</span><div><span class="t">${esc(d.i)} ${esc(d.t)}</span> <span class="d">${esc(d.d || "")}</span></div><span class="rt">${esc(right)}</span></div>${subs ? `<div class="subs">${subs}</div>` : ""}`;
+}
+function turnHtml(b) {
+  const evs = b.items, find = k => evs.find(e => e.event_type === k);
+  const req = find("model_request"), resp = find("model_response"), call = find("tool_call"), result = find("tool_result");
+  const pending = req && (req.payload || {}).pending;
+  const tool = call ? (call.payload || {}).tool_name : "";
+  const tokens = resp ? `${((resp.payload.input_tokens || 0) + (resp.payload.output_tokens || 0)).toLocaleString()} tokens` : "";
+  const plan = describe(req || {event_type: "model_request", payload: {turn: b.turn}, actor: "agent"});
+  const act = call ? describe(call) : (pending ? {c: "k-run minor", i: "…", t: "Choosing a tool", d: ""} : {c: "k-tool minor", i: "–", t: "No tool call this turn", d: ""});
+  const extras = evs.filter(e => ["verification", "escalation"].includes(e.event_type));
+  let obs = result ? describe(result) : {c: "k-tool minor", i: "…", t: pending || !call ? "Waiting" : "Waiting for the tool", d: ""};
+  const bad = extras.find(e => e.event_type === "verification" && (e.payload || {}).passed === false);
+  const subs = extras.map(e => describe(e)).filter(Boolean).map(d => `<div>${esc(d.i)} ${esc(d.t)}${d.d ? " — " + esc(short(d.d, 200)) : ""}</div>`).join("");
+  if (bad && result && !(obs.c || "").includes("k-bad")) obs = Object.assign({}, obs, {c: "k-bad"});
+  return `<div class="tb"><div class="tb-head" onclick="showTurn(${Number(b.turn) || 0})"><b>Turn ${esc(b.turn)}${tool ? " · " + esc(tool) : ""}</b><span class="why">what the model saw ▸ ${esc(tokens)}</span></div>`
+    + row("Plan", "ph-plan", plan, time(req && req.timestamp)) + row("Act", "ph-act", act) + row("Observe", "ph-observe", obs, "", subs) + `</div>`;
+}
+function systemHtml(b) {
+  const d = describe(b.ev); if (!d) return "";
+  return `<div class="tb"><div class="r sys ${d.c.replace("minor", "")}"><span class="t">${esc(d.i)} ${esc(d.t)} <span class="d">${esc(d.d || "")}</span></span><span class="rt">${esc(time(b.ev.timestamp))}</span></div></div>`;
+}
+function renderTimeline() {
+  const tl = $("timeline");
+  const html = buildBlocks(events).map(b => b.sys ? systemHtml(b) : turnHtml(b)).join("") || `<div class="empty">Each turn appears here as Plan → Act → Observe.</div>`;
+  const atBottom = tl.scrollHeight - tl.scrollTop - tl.clientHeight < 60;
+  if (setHtml(tl, html) && atBottom) tl.scrollTop = tl.scrollHeight;
+}
+function setEvents(all) { events = all || []; renderTimeline(); }
+function dialog(title, html) { $("dlgTitle").textContent = title; $("dlgBody").innerHTML = html; $("dlg").showModal(); }
+function showTurn(n) {
+  const evs = events.filter(e => (e.payload || {}).turn === n), find = k => evs.find(e => e.event_type === k);
+  const req = find("model_request"), call = find("tool_call"), result = find("tool_result"), resp = find("model_response");
+  const w = (req && req.payload.saw) || {};
+  const counts = Object.entries(w.counts || {}).map(([k, v]) => `${v} ${esc(k)}`).join(", ") || "nothing yet";
+  const saw = `<div class="box">${w.items ?? 0} items in its context: ${counts}</div>`
+    + (w.newest_observation ? `<div class="box"><b>Newest tool result it saw</b><pre>${esc(w.newest_observation)}</pre></div>` : "")
+    + (w.newest_message ? `<div class="box"><b>Newest message</b><div>${esc(w.newest_message)}</div></div>` : "");
+  const decided = call ? `<div class="box">Chose <code>${esc(call.payload.tool_name)}</code><pre>${esc(JSON.stringify(call.payload.arguments, null, 2))}</pre></div>` : `<div class="box muted">No tool call this turn.</div>`;
+  const returned = result ? `<div class="box"><pre>${esc(JSON.stringify(result.payload.result, null, 2))}</pre></div>` : `<div class="box muted">Nothing returned yet.</div>`;
+  const after = evs.filter(e => ["verification", "escalation"].includes(e.event_type)).map(describe).filter(Boolean).map(d => `<div class="box ${esc(d.c.replace("minor", ""))}">${esc(d.i)} ${esc(d.t)}${d.d ? " — " + esc(short(d.d, 300)) : ""}</div>`).join("") || `<div class="box muted">No checks or escalations on this turn.</div>`;
+  const cost = resp ? `<div class="small muted">${(resp.payload.input_tokens || 0).toLocaleString()} tokens in, ${(resp.payload.output_tokens || 0).toLocaleString()} out</div>` : "";
+  dialog(`Turn ${n}: what the model saw and decided`, `<div class="saw"><h3>1 · What the model saw</h3>${saw}${cost}<h3>2 · What it decided</h3>${decided}<h3>3 · What the tool returned (fed back next turn)</h3>${returned}<h3>4 · After the turn</h3>${after}</div>`);
+}
+function showRaw(which) { if (!detail) return; dialog(which === "state" ? "Agent state (from progress.json)" : "Run record", `<pre>${esc(JSON.stringify(which === "state" ? detail.state : detail.record, null, 2))}</pre>`); }
+async function showAudit() {
+  try {
+    const a = await api(`/api/runs/${selected}/audit`);
+    const rows = a.events.map(e => `<tr><td>${esc(time(e.timestamp || e.ts || e.at))}</td><td>${esc(txt(e.actor))}</td><td>${esc(txt(e.event_type || e.type || e.event))}</td><td>${esc(short(JSON.stringify(e.detail ?? e), 240))}</td></tr>`).join("");
+    dialog(`Audit log: ${a.total} events${a.total > a.events.length ? ` (last ${a.events.length})` : ""}`, rows ? `<table class="audit-table">${rows}</table>` : `<div class="muted">No events recorded.</div>`);
+  } catch (e) { toast(e.message, true); }
+}
+
+// ---------- documents, citations, review ----------
+function citeHtml(c) {
+  const oid = c.outcome_id ?? c.document_id ?? "";
+  return `<div class="fact"><span class="src">${esc(oid)}${c.page != null ? " · p" + esc(c.page) : ""}</span> <span class="q">“${esc(short(c.quote, 180))}”</span></div>`
+    + `<div class="cite-src" data-oid="${esc(oid)}" data-quote="${esc(c.quote ?? "")}">Checking the curriculum pack…</div>`;
+}
+function docHtml(doc, rec, interactive) {
+  const open = new Set(openEscalations(rec).map(e => e.item)), acks = acksFor();
+  const title = doc.title || doc.conclusion || doc.summary;
+  const sub = doc.title && (doc.conclusion || doc.summary) ? `<div class="small" style="margin-bottom:6px">${esc(txt(doc.conclusion || doc.summary))}</div>` : "";
+  const gaps = asList(doc.gaps).map(txt).filter(Boolean);
+  const rows = docRows(doc).map(f => {
+    const state = rowState(f, open), cites = asList(f.citations).filter(c => c && typeof c === "object");
+    const fig = f.figure_id ? `<img class="fig" alt="${esc(f.figure_alt || "Figure " + f.figure_id)}" src="/api/figure?run=${encodeURIComponent(selected)}&id=${encodeURIComponent(f.figure_id)}" onerror="this.outerHTML='<div class=&quot;cite-src bad&quot;>Figure ${esc(f.figure_id)} could not be loaded.</div>'">` : "";
+    const ack = interactive && state === "unverified" ? `<label class="ack"><input type="checkbox" data-id="${esc(f.item)}" ${acks.has(String(f.item)) ? "checked" : ""} onchange="toggleAck(this.dataset.id, this.checked)"> I have checked this row myself and want to keep it</label>` : "";
+    return `<div class="finding${state === "unverified" ? " unver" : state === "failed" ? " bad" : ""}" data-item="${esc(f.item)}"><div class="head"><b>${esc(itemLabel(f.item))}</b><span class="badge s-${state}">${state}</span></div>`
+      + `<div>${esc(txt(f.content ?? f.summary))}</div>${cites.map(citeHtml).join("")}${fig}${ack}</div>`;
+  }).join("");
+  return `<div style="font-size:15px;font-weight:600;margin:2px 0 6px">${esc(txt(title))}</div>${sub}${rows || `<div class="muted small">This document has no rows.</div>`}`
+    + (gaps.length ? `<div class="small" style="margin-top:6px"><b>Gaps the agent reported</b><ul class="gaps">${gaps.map(g => `<li>${esc(g)}</li>`).join("")}</ul></div>` : "");
+}
+function outcomeLookup(oid) {
+  if (!window._outcomes[oid]) window._outcomes[oid] = api(`/api/outcome?id=${encodeURIComponent(oid)}`).then(o => ({ok: true, o})).catch(e => ({ok: false, err: e.message}));
+  return window._outcomes[oid];
+}
+async function fillOutcomes() {
+  for (const el of document.querySelectorAll(".cite-src[data-oid]:not([data-done])")) {
+    el.dataset.done = "1";
+    const oid = el.dataset.oid, quote = el.dataset.quote || "";
+    const r = await outcomeLookup(oid);
+    if (!r.ok) { el.className = "cite-src bad"; el.textContent = `“${oid}” is not in the curriculum pack.`; continue; }
+    const found = quote && norm(r.o.text).includes(norm(quote));
+    el.className = "cite-src " + (found ? "ok" : "bad");
+    el.innerHTML = `<b>Curriculum pack${r.o.sub_strand ? " · " + esc(r.o.sub_strand) : ""}:</b> ${esc(short(r.o.text, 320))}<div>${found ? "✓ The quoted words appear in this outcome." : "✕ The quoted words do not appear in this outcome."}</div>`;
+  }
+}
+// ---------- document viewer and email ----------
+function openDoc(what) {
+  if (!selected || !detail) return;
+  window._doc = {what, fmt: (window._doc && window._doc.fmt) || "pdf", busy: false, result: null, token: 0};
+  renderDocViewer();
+}
+function setDocFmt(fmt) {
+  if (!window._doc || window._doc.fmt === fmt) return;
+  window._doc.fmt = fmt; window._doc.result = null;
+  renderDocViewer();
+}
+function docLabel(what) {
+  return ((DOC_WHATS.find(([w]) => w === what) || [])[1]) || what;
+}
+function renderDocViewer() {
+  const v = window._doc;
+  if (!v || !detail) return;
+  const rec = detail.record || {}, doc = documentOf(rec) || {};
+  const title = txt(doc.title || doc.conclusion || docLabel(v.what));
+  if (v.subject === undefined) v.subject = `${title} [${selected}]`;
+  const gaps = asList(doc.gaps).map(txt).filter(Boolean);
+  const smtp = !!(info || {}).smtp_configured;
+  const stamp = `run=${encodeURIComponent(selected)}&what=${v.what}&format=${v.fmt}`;
+  dialog(`${docLabel(v.what)} · ${title}`,
+    `<div class="dochead"><span class="badge s-${esc(doc.status || "unknown")}">${esc(doc.status || "unknown")}</span> <span class="muted">${docRows(doc).length} rows${gaps.length ? ` · ${gaps.length} gaps` : ""}</span></div>`
+    + `<div class="doctabs">${["pdf", "docx"].map(f => `<button class="${f === v.fmt ? "on" : ""}" onclick="setDocFmt('${f}')">${f === "pdf" ? "PDF" : "Word"}</button>`).join("")}<a class="file" href="/api/export?${stamp}&download=1">Download ${v.fmt.toUpperCase()}</a></div>`
+    + `<div id="docPreview"></div>`
+    + `<div class="docform"><label>To (comma-separated)</label><input type="text" id="docTo" placeholder="teacher@school.edu" value="${esc(v.to || "")}" oninput="window._doc.to=this.value">`
+    + `<label>Subject</label><input type="text" id="docSubject" value="${esc(v.subject || "")}" oninput="window._doc.subject=this.value">`
+    + `<label>Message (optional — a default is used when empty)</label><textarea id="docMessage" placeholder="A note to go with the attachment…" oninput="window._doc.message=this.value">${esc(v.message || "")}</textarea></div>`
+    + `<div class="steps" style="margin-top:8px"><button class="primary" ${smtp && !v.busy ? "" : "disabled"} onclick="sendDoc()">${v.busy ? "Sending…" : "Send email"}</button></div>`
+    + `<div id="docMailResult"></div>`);
+  paintDocMail();
+  loadDocPreview();
+}
+async function loadDocPreview() {
+  const v = window._doc, box = $("docPreview");
+  if (!v || !box || !Detail) return;
+  const my = ++v.token;
+  box.innerHTML = `<div class="muted">Building the ${v.fmt.toUpperCase()}…</div>`;
+  const rec = detail.record || {}, doc = documentOf(rec) || {};
+  try {
+    const r = await fetch(`/api/export?run=${encodeURIComponent(selected)}&what=${v.what}&format=${v.fmt}`);
+    if (window._doc !== v || v.token !== my) return;
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.statusText);
+    if (v.fmt === "pdf") {
+      const blob = await r.blob();
+      if (window._doc !== v || v.token !== my) return;
+      const url = URL.createObjectURL(blob);
+      if (window._docBlob) URL.revokeObjectURL(window._docBlob);
+      window._docBlob = url;
+      box.innerHTML = `<embed class="docpdf" type="application/pdf" src="${url}">`;
+    } else {
+      box.innerHTML = `<div class="muted small" style="margin-bottom:4px">Word files cannot preview in the browser — the document text is shown instead. Use Download or Send email for the file itself.</div>` + docHtml(doc, rec, false);
+      fillOutcomes();
+    }
+  } catch (e) {
+    if (window._doc === v && v.token === my) box.innerHTML = `<div class="cite-src bad">${esc(e.message)}</div>`;
+  }
+}
+function paintDocMail() {
+  const v = window._doc, box = $("docMailResult");
+  if (!v || !box) return;
+  const smtp = !!(info || {}).smtp_configured;
+  box.innerHTML = v.busy ? `<div class="vstatus"><span class="spinner"></span> Sending…</div>`
+    : v.result ? `<div class="cite-src ${v.result.ok ? "ok" : "bad"}">${esc(v.result.text)}</div>`
+    : (smtp ? "" : `<div class="hint">Add SMTP_HOST and SMTP_FROM to .env to enable sending (see .env.example).</div>`);
+}
+async function sendDoc() {
+  const v = window._doc;
+  if (!v || v.busy) return;
+  const to = (($("docTo") || {}).value || "").trim();
+  if (!to) { toast("Type at least one recipient address.", true); return; }
+  v.busy = true; v.result = null; paintDocMail();
+  try {
+    const r = await api(`/api/runs/${selected}/send`, {what: v.what, format: v.fmt, to, subject: ($("docSubject") || {}).value || "", message: ($("docMessage") || {}).value || ""});
+    v.result = {ok: true, text: `Sent ${r.file} (${r.bytes} bytes) to ${(r.to || []).join(", ")}`};
+    toast(`Email sent to ${(r.to || []).join(", ")}`);
+  } catch (e) {
+    v.result = {ok: false, text: e.message}; toast(e.message, true);
+  }
+  v.busy = false; paintDocMail();
+}
+
+function renderCards() {
+  const d = detail, el = $("cards");
+  if (!d) { setHtml(el, info.root ? "" : `<div class="panel card-amber"><h2>No repository found</h2><div class="small">Start the console from the repository root (<code>./helper ui</code>), or pass <code>--root PATH</code>.</div></div>`); return; }
+  const rec = d.record || {}, st = d.state || {}, running = d.status === "running"; let html = "";
+  const reqs = (rec.requests || []).filter(r => r.status === "open"), req = reqs[reqs.length - 1];
+  if (req && !running && (d.status === "needs_input" || d.status === "escalated")) {
+    const need = req.need || req.what_is_needed || "The agent needs information it cannot find.", tried = req.what_was_tried || req.tried || "", code = req.rule || req.reason_code || "";
+    const aboutTranscription = code === "missing_outcome_text" || /pending_transcription|not transcribed|transcrib/i.test(need);
+    const guide = aboutTranscription ? `<div class="hint">How to answer: your reply cannot supply official wording — only the transcribed curriculum pack can. Either tell the agent to proceed and list this as a gap, or transcribe the wording into the pack yourself and resume so it re-reads.</div>
+      <div class="steps"><button onclick="fillAnswer(0)">Leave as gap and proceed</button><button onclick="fillAnswer(1)">I'll transcribe, then resume</button></div>` : "";
+    html += `<div class="panel card-amber"><h2>The agent needs your input${code ? ` <span class="code-badge">${esc(code)}</span>` : ""}</h2><div class="need">${esc(need)}</div>
+      <div class="kv"><b>Item</b><span>${esc(itemLabel(req.item))}</span>${tried ? `<b>What it tried</b><span>${esc(tried)}</span>` : ""}<b>Curriculum read</b><span>${(st.read_ids || []).length} entries</span></div>
+      ${guide}
+      <textarea id="answerNotes" placeholder="Type the information, or say what to do instead…" oninput="window._notes.answer=this.value">${esc(window._notes.answer || "")}</textarea>
+      <div class="steps" style="margin-top:6px"><button class="primary" data-id="${esc(req.id)}" onclick="answerRequest(this.dataset.id)">Send answer and resume</button></div></div>`;
+  }
+  const doc = documentOf(rec), status = doc && doc.status;
+  if (doc && !running) {
+    if (status === "awaiting_verification") {
+      html += `<div class="panel card-violet" style="border-color:var(--blue);background:#eef4ff"><h2 style="color:var(--blue)">Waiting for the independent check</h2>${docHtml(doc, rec, false)}<div class="steps" style="margin-top:8px"><button class="primary" ${verifyBusy ? "disabled" : ""} onclick="verifyRun('independent')">${verifyBusy && verifyBusy.what === "independent" ? "Working…" : "Run the independent check"}</button></div></div>`;
+    } else if (status === "awaiting_signoff") {
+      const missing = unverifiedItems(doc, rec).filter(i => !acksFor().has(i));
+      html += `<div class="panel card-violet"><h2>Teacher review · document waiting for you</h2>${docHtml(doc, rec, true)}
+        <div style="margin-top:8px"><textarea id="signoffNotes" placeholder="Notes for the record, or what the agent should change if you reject…" oninput="window._notes.signoff=this.value">${esc(window._notes.signoff || "")}</textarea></div>
+        <div class="steps" style="margin-top:6px"><button class="ok" ${missing.length ? "disabled" : ""} onclick="review('approve')">Approve document</button><button class="danger" onclick="review('reject')">Reject and send back</button></div>
+        ${missing.length ? `<div class="hint">Tick the box on each unverified row you have checked to enable approval (${missing.length} left).</div>` : ""}</div>`;
+    } else if (status === "awaiting_hod") {
+      html += `<div class="panel card-violet"><h2>Waiting for the head of department</h2><div class="small" style="margin-bottom:6px">The teacher approved this exam document. It needs a head-of-department review before it counts as approved.</div>${docHtml(doc, rec, false)}<div class="hint">Head-of-department review runs in the terminal for now: <code>./helper review ${esc(d.id)} --hod-approve</code> or <code>--hod-reject --notes "…"</code>.</div></div>`;
+    } else if (status === "approved" || d.status === "done") {
+      html += `<div class="panel card-green"><h2>Approved document</h2>${docHtml(doc, rec, false)}</div>`;
+    } else if (status === "rejected") {
+      html += `<div class="panel card-amber"><h2>Document rejected · back with the agent</h2><div class="small">${esc(txt((doc.review || {}).notes))}</div></div>`;
+    } else if (status === "unverified") {
+      html += `<div class="panel card-yellow"><h2>Document (not checked)</h2>${docHtml(doc, rec, false)}<div class="hint">Checks were off or not run for this document. Run them below before relying on it.</div></div>`;
+    }
+    html += `<div class="panel"><h2>Documents</h2><div class="steps">${DOC_WHATS.map(([w, label]) => `<button onclick="openDoc('${w}')">${label}</button>`).join("")}</div><div class="hint">Opens the viewer: read, download, or email the Word/PDF. Built fresh from the record each time.</div></div>`;
+  }
+  if (d.id) {
+    const off = running || verifyBusy ? "disabled" : "", btn = (what, text, cls = "") => `<button class="${cls}" ${off} onclick="verifyRun('${what}')">${verifyBusy && verifyBusy.what === what ? "Working…" : text}</button>`;
+    const last = (window._lastVerify || {})[d.id], results = [last, ...(d.verification || []).slice().reverse()].filter(Boolean).slice(0, 4);
+    const line = r => {
+      const probs = [...asList(r.rules), ...asList(r.claims), ...asList(r.problems), ...asList(r.unverified)].map(p => `<br>· ${esc(txt(p))}`).join("");
+      const extra = typeof r.score === "number" ? ` · coverage ${pct(r.score)}${r.feedback ? `<br>Feedback: ${esc(txt(r.feedback))}` : ""}` : "";
+      return `<div class="kv vresult${verifyFresh && verifyFresh.run === d.id && verifyFresh.what === r.what ? " fresh" : ""}"><b>${esc(itemLabel(r.what || "check"))}</b><span>${r.passed ? "✓ passes" : "✕ fails"}${extra}${probs}</span></div>`;
+    };
+    html += `<div class="panel"><h2>Verify this run</h2><div class="steps">${btn("document", "Check the document")}${btn("checklist", "Check the checklist")}${btn("independent", "Run the independent check", "primary")}</div>`
+      + (verifyError && verifyError.run === d.id ? `<div class="vstatus err">✕ ${esc(verifyError.message)}</div>` : "") + results.map(line).join("")
+      + `<div class="hint">These run the project's own checks again on the saved work. The independent check is a separate process that does not trust the agent's own results.</div></div>`;
+  }
+  if (d.error) html += `<div class="panel card-amber"><h2>Paused: the model call failed</h2><div class="small">${esc(txt(d.error))}</div><div class="steps" style="margin-top:6px"><button class="primary" onclick="resumeRun()">Resume this run</button></div></div>`;
+  else if (d.status === "paused" && !running) html += `<div class="panel card-amber"><h2>Paused at the turn limit</h2><div class="steps"><button class="primary" onclick="resumeRun()">Resume this run</button></div></div>`;
+  // Polling rebuilds these cards every second, which would destroy the box being typed in
+  // after every keystroke. Remember the focused box (and caret) and put it back afterwards.
+  const typing = document.activeElement && el.contains(document.activeElement) && document.activeElement.id
+    ? {id: document.activeElement.id, s: -1, e: -1} : null;
+  if (typing && "selectionStart" in document.activeElement) {
+    try { typing.s = document.activeElement.selectionStart; typing.e = document.activeElement.selectionEnd; } catch { /* not selectable */ }
+  }
+  if (setHtml(el, html)) fillOutcomes();
+  if (typing) {
+    const back = document.getElementById(typing.id);
+    if (back && back !== document.activeElement) {
+      back.focus({preventScroll: true});
+      if (typing.s >= 0) { try { back.setSelectionRange(typing.s, typing.e); } catch { /* box is gone */ } }
+    }
+  }
+}
+
+// ---------- side panels and header ----------
+function renderSide() {
+  const d = detail, st = d.state || {}, rec = d.record || {};
+  const raw = rec.checklist || {}, entries = Array.isArray(raw) ? raw.map(x => [x.id, x]) : Object.entries(raw);
+  const proven = entries.filter(([, e]) => ["proven", "verified"].includes(e.status)).length;
+  $("ckcount").textContent = entries.length ? `${proven}/${entries.length} settled` : "";
+  const checks = rec.checklist_checks || [], lastCk = checks[checks.length - 1];
+  const cov = !lastCk ? "" : lastCk.passed
+    ? `<div class="ck-cov" style="background:var(--green-bg);color:var(--green)">✓ Required coverage ${pct(lastCk.score)}${checks.length > 1 ? ` (after ${checks.length - 1} refused draft${checks.length > 2 ? "s" : ""})` : ""}</div>`
+    : `<div class="ck-cov" style="background:var(--${lastCk.accepted ? "amber" : "red"}-bg);color:var(--${lastCk.accepted ? "amber" : "red"})">${lastCk.accepted ? "⚠ Accepted after " + lastCk.attempt + " tries" : "✕ Draft refused"} · required coverage ${pct(lastCk.score)}<div class="small">${esc(lastCk.feedback || "")}</div></div>`;
+  const cites = citationsOf(rec);
+  setHtml($("checklist"), entries.length ? cov + entries.map(([i, e]) => {
+    const tags = [e.added_after_check ? `<span class="badge s-escalated">added after check</span>` : "", e.request ? `<span class="badge s-escalated">request ${esc(e.request)}</span>` : "", e.reason_code ? `<span class="code-badge">${esc(e.reason_code)}</span>` : ""].join("");
+    const q = e.question || e.requirement || e.description;
+    return `<div class="item" data-item="${esc(i)}"><div class="head"><span>${esc(itemLabel(i))}</span><span class="badge s-${esc(e.status)}">${esc(e.status)}</span></div>
+      ${q ? `<div class="ck-q">${esc(q)}</div>` : ""}${e.evidence_needed ? `<div class="ck-e">Settled by: ${esc(e.evidence_needed)}</div>` : ""}${tags ? `<div class="ck-tags">${tags}</div>` : ""}
+      ${cites.filter(c => c.item === i).map(c => `<div class="fact"><span class="src">${esc(c.outcome_id ?? c.document_id)}${c.page != null ? " · p" + esc(c.page) : ""}</span> <span class="q">“${esc(short(c.quote, 140))}”</span></div>`).join("")}</div>`;
+  }).join("") : cov + `<div class="muted small">No checklist yet. The agent drafts it first (set_checklist).</div>`);
+  const escs = (rec.escalations || []), openReqs = (rec.requests || []).filter(r => r.status === "open");
+  const openCount = openEscalations(rec).length + openReqs.length;
+  $("esccount").textContent = openCount ? `${openCount} open` : "";
+  const escHtml = [...escs.map(e => `<div class="esc-item"><div><span class="code-badge">${esc(e.reason_code || e.rule || "escalation")}</span> <b>${esc(itemLabel(e.item))}</b> <span class="badge s-${["resolved", "closed"].includes(String(e.status)) ? "done" : "escalated"}">${esc(e.status || "open")}</span></div><div class="small">${esc(e.what_is_needed || e.need || "")}</div>${e.assigned_role ? `<div class="small muted">Routed to ${esc(e.assigned_role)}</div>` : ""}${e.resolution ? `<div class="small muted">Resolved: ${esc(txt(e.resolution))}</div>` : ""}</div>`),
+    ...openReqs.map(r => `<div class="esc-item"><div><span class="code-badge">${esc(r.rule || "ask_teacher")}</span> <b>${esc(itemLabel(r.item))}</b> <span class="badge s-needs_input">waiting for you</span></div><div class="small">${esc(r.need || "")}</div></div>`)].join("");
+  setHtml($("escalations"), escHtml || `<div class="muted small">Nothing escalated.</div>`);
+  const plan = st.plan || [];
+  setHtml($("plan"), plan.length ? plan.map(s => `<li>${esc(txt(s))}</li>`).join("") : `<li class="muted">No plan yet</li>`);
+  const skip = new Set(["plan", "task", "read_ids", "objective"]);
+  setHtml($("stateinfo"), Object.entries(st).filter(([k]) => !skip.has(k)).map(([k, v]) => `<div><b>${esc(k)}</b>: ${esc(short(typeof v === "string" ? v : JSON.stringify(v), 150))}</div>`).join("") || "—");
+  $("auditLink").style.display = d.audit_available ? "" : "none";
+}
+function renderHead() {
+  const d = detail, m = d.metrics, st = d.state || {}, running = d.status === "running", ctl = info.control || {};
+  const stepHtml = running && ctl.step ? `<div class="stepbar">${ctl.waiting ? `⏸ <b>Paused before turn ${(st.turn || 0) + 1}.</b> Explain what just happened, then` : "▶ Running one turn…"} <button class="primary" ${ctl.waiting ? "" : "disabled"} onclick="nextTurn()">Next turn ▶</button><button onclick="runToEnd()">Run to end</button></div>` : "";
+  setHtml($("stepbar"), stepHtml);
+  const runs = window._runs || [];
+  const picker = `<select onchange="select(this.value)" title="Run">${runs.map(r => `<option value="${esc(r.id)}" ${r.id === d.id ? "selected" : ""}>${esc(r.id)} (${esc(r.status)})</option>`).join("")}</select>`;
+  const metric = (v, label, color) => `<div class="metric"><b${color ? ` style="color:${color}"` : ""}>${v}</b><span>${label}</span></div>`;
+  const html = `<h2>Run</h2><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">${picker} <span class="badge s-${esc(d.status)}">${esc(d.status)}</span> <span class="small muted">${d.state && d.state.verification ? "checks on" : "checks off"}${d.state && d.state.model ? " · " + esc(d.state.model) : ""}</span></div>
+    <div class="metrics">${metric(m.agent_turns, "agent turns")}${metric(m.tool_calls, "tool calls")}${metric(m.tokens.toLocaleString(), "agent tokens")}${metric(citationsOf(d.record).length, "citations")}${metric(m.rejected, "checks failed", m.rejected ? "var(--red)" : "")}${metric(m.escalations, "escalations", m.escalations ? "var(--amber)" : "")}</div>
+    ${d.job ? `<details style="margin-top:8px" ${window._termOpen ? "open" : ""} ontoggle="window._termOpen=this.open"><summary class="small muted">Terminal output (one line per turn)</summary><pre>${esc(d.job.log || "…")}</pre></details>` : ""}`;
+  if (window._lastHead === html) return;
+  if (document.activeElement && document.activeElement.tagName === "SELECT" && $("runhead").contains(document.activeElement)) return;
+  window._lastHead = html; $("runhead").innerHTML = html;
+}
+
+// ---------- polling ----------
+async function loadDetail() {
+  if (!selected) return;
+  const id = selected;
+  const d = await api(`/api/runs/${id}`);
+  if (id !== selected) return;
+  detail = d;
+  for (const [name, render] of [["timeline", () => setEvents(d.events)], ["run panel", renderHead], ["cards", renderCards], ["sidebar", renderSide]]) {
+    try { render(); } catch (e) { console.error(`console: ${name} failed to render`, e); }
+  }
+}
+async function poll() {
+  if (polling) return; polling = true;
+  try {
+    info = await api("/api/info");
+    if (!info.root) { renderCards(); $("startBtn").disabled = true; $("brief").innerHTML = '<div class="muted small">No repository found.</div>'; return; }
+    const briefKey = info.root + ":" + info.task + ":" + info.agent_ready;
+    if (window._briefKey !== briefKey) { window._briefKey = briefKey; loadBrief(); }
+    renderTasks(); renderPack();
+    if ($("step").dataset.init !== "1" && info.control) { $("step").checked = !!info.control.step; $("step").dataset.init = "1"; }
+    const running = (info.jobs || []).some(j => j.running);
+    $("startBtn").disabled = running || !info.agent_ready; $("resetBtn").disabled = running; $("taskSel").disabled = running || !(info.tasks || []).length;
+    const last = (info.jobs || []).slice(-1)[0];
+    if (last && !last.running && last.returncode && !last.run_id && !shownFailures.has(last.id)) { shownFailures.add(last.id); toast(`Agent failed: ${short(last.log, 220)}`, true); }
+    const runs = await api("/api/runs"); window._runs = runs;
+    if (autoFollow === "new") { const fresh = runs.find(r => !knownRuns.has(r.id)); if (fresh) { autoFollow = null; select(fresh.id); } }
+    if (!selected && !runs.length) setHtml($("timeline"), `<div class="empty">Ready. Press ▶ Start agent${info.agent_ready ? "" : " (finish teaching_agent/loop.py first)"}. Each turn appears here as Plan → Act → Observe.</div>`);
+    if (!selected && runs.length && !window._picked) { window._picked = true; select(runs[0].id); }
+    if (selected) await loadDetail();
+  } catch (e) { /* server restarting */ }
+  finally { polling = false; }
+}
+poll(); setInterval(poll, 1200);
+</script>
+</body>
+</html>

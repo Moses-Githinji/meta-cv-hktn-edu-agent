@@ -1,0 +1,301 @@
+{
+  "id": "scheme-happy-path",
+  "subject": "mathematics",
+  "level": 7,
+  "term": 1,
+  "pack": "tiny-pack",
+  "mode": "offline",
+  "objective": "File a one-item scheme of work with an exact outcome citation.",
+  "script": [
+    {
+      "tool": "set_checklist",
+      "args": {
+        "items": [
+          {
+            "id": "whole_numbers",
+            "question": "Cover T-1.1.1 this term",
+            "evidence_needed": "Outcome T-1.1.1 exact text"
+          }
+        ]
+      }
+    },
+    {
+      "tool": "cite_outcome",
+      "args": {
+        "item": "whole_numbers",
+        "outcome_id": "T-1.1.1",
+        "quote": "Learners count whole numbers up to one million in real situations.",
+        "claim": "whole numbers are covered"
+      }
+    },
+    {
+      "tool": "submit_document",
+      "args": {
+        "conclusion": "Term coverage is planned.",
+        "findings": [
+          {
+            "item": "whole_numbers",
+            "status": "proven",
+            "summary": "Whole numbers covered.",
+            "citations": [
+              {
+                "outcome_id": "T-1.1.1",
+                "quote": "Learners count whole numbers up to one million in real situations."
+              }
+            ]
+          }
+        ],
+        "gaps": "None.",
+        "lessons": [
+          {
+            "week": 1,
+            "period": 1,
+            "item": "whole_numbers",
+            "topic": "Week 1 topic",
+            "subtopic": "Week 1 period 1 subtopic",
+            "objectives": "Cover week 1 period 1.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 1,
+            "period": 2,
+            "item": "whole_numbers",
+            "topic": "Week 1 topic",
+            "subtopic": "Week 1 period 2 subtopic",
+            "objectives": "Cover week 1 period 2.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 1,
+            "period": 3,
+            "item": "whole_numbers",
+            "topic": "Week 1 topic",
+            "subtopic": "Week 1 period 3 subtopic",
+            "objectives": "Cover week 1 period 3.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 1,
+            "period": 4,
+            "item": "whole_numbers",
+            "topic": "Week 1 topic",
+            "subtopic": "Week 1 period 4 subtopic",
+            "objectives": "Cover week 1 period 4.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 1,
+            "period": 5,
+            "item": "whole_numbers",
+            "topic": "Week 1 topic",
+            "subtopic": "Week 1 period 5 subtopic",
+            "objectives": "Cover week 1 period 5.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 2,
+            "period": 1,
+            "item": "whole_numbers",
+            "topic": "Week 2 topic",
+            "subtopic": "Week 2 period 1 subtopic",
+            "objectives": "Cover week 2 period 1.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 2,
+            "period": 2,
+            "item": "whole_numbers",
+            "topic": "Week 2 topic",
+            "subtopic": "Week 2 period 2 subtopic",
+            "objectives": "Cover week 2 period 2.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 2,
+            "period": 3,
+            "item": "whole_numbers",
+            "topic": "Week 2 topic",
+            "subtopic": "Week 2 period 3 subtopic",
+            "objectives": "Cover week 2 period 3.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 2,
+            "period": 4,
+            "item": "whole_numbers",
+            "topic": "Week 2 topic",
+            "subtopic": "Week 2 period 4 subtopic",
+            "objectives": "Cover week 2 period 4.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 2,
+            "period": 5,
+            "item": "whole_numbers",
+            "topic": "Week 2 topic",
+            "subtopic": "Week 2 period 5 subtopic",
+            "objectives": "Cover week 2 period 5.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 3,
+            "period": 1,
+            "item": "whole_numbers",
+            "topic": "Week 3 topic",
+            "subtopic": "Week 3 period 1 subtopic",
+            "objectives": "Cover week 3 period 1.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 3,
+            "period": 2,
+            "item": "whole_numbers",
+            "topic": "Week 3 topic",
+            "subtopic": "Week 3 period 2 subtopic",
+            "objectives": "Cover week 3 period 2.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 3,
+            "period": 3,
+            "item": "whole_numbers",
+            "topic": "Week 3 topic",
+            "subtopic": "Week 3 period 3 subtopic",
+            "objectives": "Cover week 3 period 3.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 3,
+            "period": 4,
+            "item": "whole_numbers",
+            "topic": "Week 3 topic",
+            "subtopic": "Week 3 period 4 subtopic",
+            "objectives": "Cover week 3 period 4.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 3,
+            "period": 5,
+            "item": "whole_numbers",
+            "topic": "Week 3 topic",
+            "subtopic": "Week 3 period 5 subtopic",
+            "objectives": "Cover week 3 period 5.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 4,
+            "period": 1,
+            "item": "whole_numbers",
+            "topic": "Week 4 topic",
+            "subtopic": "Week 4 period 1 subtopic",
+            "objectives": "Cover week 4 period 1.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 4,
+            "period": 2,
+            "item": "whole_numbers",
+            "topic": "Week 4 topic",
+            "subtopic": "Week 4 period 2 subtopic",
+            "objectives": "Cover week 4 period 2.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 4,
+            "period": 3,
+            "item": "whole_numbers",
+            "topic": "Week 4 topic",
+            "subtopic": "Week 4 period 3 subtopic",
+            "objectives": "Cover week 4 period 3.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 4,
+            "period": 4,
+            "item": "whole_numbers",
+            "topic": "Week 4 topic",
+            "subtopic": "Week 4 period 4 subtopic",
+            "objectives": "Cover week 4 period 4.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 4,
+            "period": 5,
+            "item": "whole_numbers",
+            "topic": "Week 4 topic",
+            "subtopic": "Week 4 period 5 subtopic",
+            "objectives": "Cover week 4 period 5.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          }
+        ]
+      }
+    }
+  ],
+  "expect": {
+    "status": "answered",
+    "cited": [
+      "T-1.1.1"
+    ],
+    "escalated": false
+  }
+}

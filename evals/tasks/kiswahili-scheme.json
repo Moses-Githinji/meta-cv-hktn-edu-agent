@@ -1,0 +1,301 @@
+{
+  "id": "kiswahili-scheme",
+  "subject": "kiswahili",
+  "level": 7,
+  "term": 1,
+  "pack": "grade7-kiswahili-term1",
+  "mode": "offline",
+  "objective": "File a one-item Kiswahili scheme with an exact outcome citation.",
+  "script": [
+    {
+      "tool": "set_checklist",
+      "args": {
+        "items": [
+          {
+            "id": "kusoma",
+            "question": "Cover KIS-T-1.1.1 this term",
+            "evidence_needed": "Outcome KIS-T-1.1.1 exact text"
+          }
+        ]
+      }
+    },
+    {
+      "tool": "cite_outcome",
+      "args": {
+        "item": "kusoma",
+        "outcome_id": "KIS-T-1.1.1",
+        "quote": "Wanafunzi wanasikiliza mazungumzo mafupi na kujibu maswali.",
+        "claim": "Kusoma is covered"
+      }
+    },
+    {
+      "tool": "submit_document",
+      "args": {
+        "conclusion": "Term coverage is planned.",
+        "findings": [
+          {
+            "item": "kusoma",
+            "status": "proven",
+            "summary": "Kusoma covered.",
+            "citations": [
+              {
+                "outcome_id": "KIS-T-1.1.1",
+                "quote": "Wanafunzi wanasikiliza mazungumzo mafupi na kujibu maswali."
+              }
+            ]
+          }
+        ],
+        "gaps": "None.",
+        "lessons": [
+          {
+            "week": 1,
+            "period": 1,
+            "item": "kusoma",
+            "topic": "Week 1 topic",
+            "subtopic": "Week 1 period 1 subtopic",
+            "objectives": "Cover week 1 period 1.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 1,
+            "period": 2,
+            "item": "kusoma",
+            "topic": "Week 1 topic",
+            "subtopic": "Week 1 period 2 subtopic",
+            "objectives": "Cover week 1 period 2.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 1,
+            "period": 3,
+            "item": "kusoma",
+            "topic": "Week 1 topic",
+            "subtopic": "Week 1 period 3 subtopic",
+            "objectives": "Cover week 1 period 3.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 1,
+            "period": 4,
+            "item": "kusoma",
+            "topic": "Week 1 topic",
+            "subtopic": "Week 1 period 4 subtopic",
+            "objectives": "Cover week 1 period 4.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 1,
+            "period": 5,
+            "item": "kusoma",
+            "topic": "Week 1 topic",
+            "subtopic": "Week 1 period 5 subtopic",
+            "objectives": "Cover week 1 period 5.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 2,
+            "period": 1,
+            "item": "kusoma",
+            "topic": "Week 2 topic",
+            "subtopic": "Week 2 period 1 subtopic",
+            "objectives": "Cover week 2 period 1.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 2,
+            "period": 2,
+            "item": "kusoma",
+            "topic": "Week 2 topic",
+            "subtopic": "Week 2 period 2 subtopic",
+            "objectives": "Cover week 2 period 2.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 2,
+            "period": 3,
+            "item": "kusoma",
+            "topic": "Week 2 topic",
+            "subtopic": "Week 2 period 3 subtopic",
+            "objectives": "Cover week 2 period 3.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 2,
+            "period": 4,
+            "item": "kusoma",
+            "topic": "Week 2 topic",
+            "subtopic": "Week 2 period 4 subtopic",
+            "objectives": "Cover week 2 period 4.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 2,
+            "period": 5,
+            "item": "kusoma",
+            "topic": "Week 2 topic",
+            "subtopic": "Week 2 period 5 subtopic",
+            "objectives": "Cover week 2 period 5.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 3,
+            "period": 1,
+            "item": "kusoma",
+            "topic": "Week 3 topic",
+            "subtopic": "Week 3 period 1 subtopic",
+            "objectives": "Cover week 3 period 1.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 3,
+            "period": 2,
+            "item": "kusoma",
+            "topic": "Week 3 topic",
+            "subtopic": "Week 3 period 2 subtopic",
+            "objectives": "Cover week 3 period 2.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 3,
+            "period": 3,
+            "item": "kusoma",
+            "topic": "Week 3 topic",
+            "subtopic": "Week 3 period 3 subtopic",
+            "objectives": "Cover week 3 period 3.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 3,
+            "period": 4,
+            "item": "kusoma",
+            "topic": "Week 3 topic",
+            "subtopic": "Week 3 period 4 subtopic",
+            "objectives": "Cover week 3 period 4.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 3,
+            "period": 5,
+            "item": "kusoma",
+            "topic": "Week 3 topic",
+            "subtopic": "Week 3 period 5 subtopic",
+            "objectives": "Cover week 3 period 5.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 4,
+            "period": 1,
+            "item": "kusoma",
+            "topic": "Week 4 topic",
+            "subtopic": "Week 4 period 1 subtopic",
+            "objectives": "Cover week 4 period 1.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 4,
+            "period": 2,
+            "item": "kusoma",
+            "topic": "Week 4 topic",
+            "subtopic": "Week 4 period 2 subtopic",
+            "objectives": "Cover week 4 period 2.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 4,
+            "period": 3,
+            "item": "kusoma",
+            "topic": "Week 4 topic",
+            "subtopic": "Week 4 period 3 subtopic",
+            "objectives": "Cover week 4 period 3.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 4,
+            "period": 4,
+            "item": "kusoma",
+            "topic": "Week 4 topic",
+            "subtopic": "Week 4 period 4 subtopic",
+            "objectives": "Cover week 4 period 4.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          },
+          {
+            "week": 4,
+            "period": 5,
+            "item": "kusoma",
+            "topic": "Week 4 topic",
+            "subtopic": "Week 4 period 5 subtopic",
+            "objectives": "Cover week 4 period 5.",
+            "methods": "Demonstration and discussion.",
+            "activities": "Worked examples in pairs.",
+            "references": "Course book.",
+            "remarks": "None."
+          }
+        ]
+      }
+    }
+  ],
+  "expect": {
+    "status": "answered",
+    "cited": [
+      "KIS-T-1.1.1"
+    ],
+    "escalated": false
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "pack": {
+    "id": "grade7-agriculture-term1",
+    "learning_area": "Agriculture",
+    "grade": 7,
+    "curriculum": "CBC",
+    "term": 1,
+    "version": "0.1.0-phase1"
+  },
+  "source": {
+    "title": "Junior School Curriculum Design: Agriculture, Grade 7",
+    "edition": "As listed on the KICD Grade Seven designs portal",
+    "publisher": "Kenya Institute of Curriculum Development",
+    "portal": "https://kicd.ac.ke/cbc-materials/curriculum-designs/grade-seven-designs/"
+  },
+  "term": {
+    "weeks": 12,
+    "lessons_per_week": 5,
+    "note": "Working structure only: strand names and week ranges are provisional until confirmed against the official KICD design. All outcomes are pending_transcription; nothing here is quotable yet."
+  },
+  "strands": [
+    {
+      "id": "G7AGR-T1-S1",
+      "number": "1.0",
+      "name": "FARMING",
+      "sub_strands": [
+        {
+          "id": "G7AGR-T1-1.1",
+          "name": "Soil and Water",
+          "week_range": [
+            1,
+            5
+          ],
+          "outcomes": [
+            {
+              "id": "G7AGR-T1-1.1.1",
+              "outcome_text": "TODO_TRANSCRIBE",
+              "source_ref": "KICD Agriculture G7 design, Strand 1.0 FARMING, sub-strand Soil and Water",
+              "status": "pending_transcription"
+            }
+          ]
+        },
+        {
+          "id": "G7AGR-T1-1.2",
+          "name": "Crop Production",
+          "week_range": [
+            5,
+            7
+          ],
+          "outcomes": [
+            {
+              "id": "G7AGR-T1-1.2.1",
+              "outcome_text": "TODO_TRANSCRIBE",
+              "source_ref": "KICD Agriculture G7 design, Strand 1.0 FARMING, sub-strand Crop Production",
+              "status": "pending_transcription"
+            }
+          ]
+        },
+        {
+          "id": "G7AGR-T1-1.3",
+          "name": "Livestock Keeping",
+          "week_range": [
+            7,
+            9
+          ],
+          "outcomes": [
+            {
+              "id": "G7AGR-T1-1.3.1",
+              "outcome_text": "TODO_TRANSCRIBE",
+              "source_ref": "KICD Agriculture G7 design, Strand 1.0 FARMING, sub-strand Livestock Keeping",
+              "status": "pending_transcription"
+            }
+          ]
+        },
+        {
+          "id": "G7AGR-T1-1.4",
+          "name": "Farm Tools and Equipment",
+          "week_range": [
+            10,
+            11
+          ],
+          "outcomes": [
+            {
+              "id": "G7AGR-T1-1.4.1",
+              "outcome_text": "TODO_TRANSCRIBE",
+              "source_ref": "KICD Agriculture G7 design, Strand 1.0 FARMING, sub-strand Farm Tools and Equipment",
+              "status": "pending_transcription"
+            }
+          ]
+        },
+        {
+          "id": "G7AGR-T1-1.5",
+          "name": "Agribusiness",
+          "week_range": [
+            11,
+            12
+          ],
+          "outcomes": [
+            {
+              "id": "G7AGR-T1-1.5.1",
+              "outcome_text": "TODO_TRANSCRIBE",
+              "source_ref": "KICD Agriculture G7 design, Strand 1.0 FARMING, sub-strand Agribusiness",
+              "status": "pending_transcription"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

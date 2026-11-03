@@ -1,0 +1,44 @@
+{
+  "id": "originality-refusal",
+  "subject": "mathematics",
+  "level": 7,
+  "term": 1,
+  "pack": "tiny-pack",
+  "mode": "offline",
+  "objective": "An exam question copied verbatim from an outcome is refused.",
+  "script": [
+    {"tool": "set_checklist", "args": {"items": [
+      {"id": "whole_numbers", "question": "Cover T-1.1.1 this term",
+       "evidence_needed": "Outcome T-1.1.1 exact text"}
+    ]}},
+    {"tool": "cite_outcome", "args": {
+      "item": "whole_numbers", "outcome_id": "T-1.1.1",
+      "quote": "Learners count whole numbers up to one million in real situations.",
+      "claim": "whole numbers are covered"}},
+    {"tool": "submit_document", "args": {
+      "conclusion": "End of term exam.",
+      "findings": [
+        {"item": "whole_numbers", "status": "proven",
+         "summary": "Whole numbers examined.",
+         "citations": [{"outcome_id": "T-1.1.1",
+           "quote": "Learners count whole numbers up to one million in real situations."}]}
+      ],
+      "gaps": "None.",
+      "kind": "exam",
+      "exam": {
+        "blueprint": {"total_marks": 4, "sections": [
+          {"outcome_id": "T-1.1.1", "questions": 1, "marks_each": 4}
+        ]},
+        "questions": [
+          {"id": "Q1",
+           "text": "Learners count whole numbers up to one million in real situations.",
+           "marks": 4, "answer": "Copied.", "outcome_id": "T-1.1.1"}
+        ],
+        "marking_scheme": [
+          {"question_id": "Q1", "answer": "Copied.", "marks": 4}
+        ]
+      }},
+     "expect_error": "shares a"}
+  ],
+  "expect": {"memo": false}
+}

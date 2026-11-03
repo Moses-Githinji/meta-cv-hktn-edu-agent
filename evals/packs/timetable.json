@@ -1,0 +1,13 @@
+{
+  "timetable": {
+    "id": "eval-sample",
+    "grade": 7,
+    "learning_area": "Mathematics",
+    "lessons_per_week": 5,
+    "minutes_per_lesson": 40,
+    "slots": [
+      {"day": "Monday", "lessons": [1, 2], "kind": "double"},
+      {"day": "Tuesday", "lessons": [3], "kind": "single"}
+    ]
+  }
+}

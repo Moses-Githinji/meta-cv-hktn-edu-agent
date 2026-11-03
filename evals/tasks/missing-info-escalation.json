@@ -1,0 +1,20 @@
+{
+  "id": "missing-info-escalation",
+  "subject": "mathematics",
+  "level": 7,
+  "term": 1,
+  "pack": "tiny-pack",
+  "mode": "offline",
+  "objective": "A pending outcome refuses to read and escalates to the teacher.",
+  "script": [
+    {"tool": "set_checklist", "args": {"items": [
+      {"id": "gaps", "question": "Name the gaps",
+       "evidence_needed": "Pending T-1.1.2 stays a gap"}
+    ]}},
+    {"tool": "read_curriculum", "args": {"outcome_id": "T-1.1.2"},
+     "expect_error": "not transcribed yet"},
+    {"tool": "ask_teacher", "args": {
+      "item": "gaps", "question": "T-1.1.2 wording is missing; proceed?"}}
+  ],
+  "expect": {"status": "needs_input", "escalated": true}
+}

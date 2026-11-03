@@ -1,0 +1,62 @@
+To: info@kicd.ac.ke
+Subject: Request for Access to Official Curriculum Designs — ShuleWeb (Mada Platform)
+
+Dear Sir/Madam,
+
+RE: REQUEST FOR ACCESS TO OFFICIAL KICD CURRICULUM DESIGNS
+
+I write on behalf of ShuleWeb, a Kenyan company building Mada, an
+AI-powered platform designed to make a teacher's work effortless when
+translating the national curriculum into schemes of work, lesson plans,
+and examination drafts.
+
+Reason for writing
+
+We are seeking your assistance in accessing KICD's official curriculum
+design materials across all levels of the Competency-Based Curriculum
+— Pre-Primary, Primary, Junior School, and Senior School. These designs
+are currently published on the KICD website as embedded previews whose
+downloading is disabled, which prevents our platform from retrieving
+the official documents programmatically.
+
+We therefore request that KICD grant our platform access to these
+official curriculum designs — whether by enabling downloading on the
+existing files, providing the documents directly, or advising on an
+approved channel through which we may obtain them.
+
+What this access would help us achieve
+
+With access to the official designs, our platform would:
+
+- Give teachers instant access to the official curriculum designs
+  wherever they are, including in schools with limited connectivity,
+  where the materials can be used offline once retrieved.
+- Ensure the materials teachers work with are always accurate and up
+  to date, because they would be drawn directly from KICD's official
+  publications rather than from unofficial or outdated copies in
+  circulation.
+
+How this serves the teacher
+
+Today, a teacher's time is divided between preparing the required
+professional documents and doing the actual teaching. By placing the
+official designs at the heart of our platform, Mada would relieve
+teachers of the mechanical work of generating schemes of work, lesson
+plans, and exam drafts from the curriculum — allowing them to shift
+their full attention to teaching itself, confident that every document
+they use is faithful to KICD's official designs.
+
+We wish to assure you that the materials would be used strictly to
+serve teachers in this manner, with full acknowledgement of KICD as the
+source, and we are happy to discuss any terms, attribution requirements,
+or technical arrangements you consider appropriate.
+
+We look forward to your guidance and remain available for any further
+information you may require.
+
+Yours faithfully,
+
+[Your Full Name]
+[Your Title], ShuleWeb
+[Phone Number]
+[Email Address]

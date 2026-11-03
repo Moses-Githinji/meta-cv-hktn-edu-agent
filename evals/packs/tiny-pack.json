@@ -1,0 +1,57 @@
+{
+  "pack": {
+    "id": "test-pack",
+    "learning_area": "Mathematics",
+    "grade": 7,
+    "curriculum": "CBC",
+    "term": 1,
+    "version": "0.0-test"
+  },
+  "source": {
+    "title": "Test design",
+    "edition": "test",
+    "publisher": "Kenya Institute of Curriculum Development"
+  },
+  "term": {"weeks": 4, "lessons_per_week": 5},
+  "strands": [
+    {
+      "id": "S1",
+      "number": "1.0",
+      "name": "NUMBERS",
+      "sub_strands": [
+        {
+          "id": "T-1.1",
+          "name": "Whole Numbers",
+          "week_range": [1, 2],
+          "outcomes": [
+            {
+              "id": "T-1.1.1",
+              "outcome_text": "Learners count whole numbers up to one million in real situations.",
+              "source_ref": "test",
+              "status": "transcribed"
+            },
+            {
+              "id": "T-1.1.2",
+              "outcome_text": "TODO_TRANSCRIBE",
+              "source_ref": "test",
+              "status": "pending_transcription"
+            }
+          ]
+        },
+        {
+          "id": "T-1.2",
+          "name": "Factors",
+          "week_range": [3, 4],
+          "outcomes": [
+            {
+              "id": "T-1.2.1",
+              "outcome_text": "Learners list factors of whole numbers up to one hundred accurately.",
+              "source_ref": "test",
+              "status": "transcribed"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

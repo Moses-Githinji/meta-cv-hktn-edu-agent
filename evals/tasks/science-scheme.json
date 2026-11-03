@@ -1,0 +1,11 @@
+{
+  "id": "science-scheme",
+  "subject": "science",
+  "level": 7,
+  "term": 1,
+  "pack": "science-grade7-term1",
+  "mode": "offline",
+  "objective": "Placeholder: runs once the science pack lands (see EXPANSION.md).",
+  "script": [],
+  "expect": {}
+}

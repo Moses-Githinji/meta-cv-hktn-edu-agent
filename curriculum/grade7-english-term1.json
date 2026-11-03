@@ -1,0 +1,110 @@
+{
+  "pack": {
+    "id": "grade7-english-term1",
+    "learning_area": "English",
+    "grade": 7,
+    "curriculum": "CBC",
+    "term": 1,
+    "version": "0.1.0-phase1"
+  },
+  "source": {
+    "title": "Junior School Curriculum Design: English, Grade 7",
+    "edition": "As listed on the KICD Grade Seven designs portal",
+    "publisher": "Kenya Institute of Curriculum Development",
+    "portal": "https://kicd.ac.ke/cbc-materials/curriculum-designs/grade-seven-designs/"
+  },
+  "term": {
+    "weeks": 12,
+    "lessons_per_week": 5,
+    "note": "Working structure only: strand names and week ranges are provisional until confirmed against the official KICD design. All outcomes are pending_transcription; nothing here is quotable yet."
+  },
+  "strands": [
+    {
+      "id": "G7ENG-T1-S1",
+      "number": "1.0",
+      "name": "LANGUAGE SKILLS",
+      "sub_strands": [
+        {
+          "id": "G7ENG-T1-1.1",
+          "name": "Listening and Speaking",
+          "week_range": [
+            1,
+            5
+          ],
+          "outcomes": [
+            {
+              "id": "G7ENG-T1-1.1.1",
+              "outcome_text": "TODO_TRANSCRIBE",
+              "source_ref": "KICD English G7 design, Strand 1.0 LANGUAGE SKILLS, sub-strand Listening and Speaking",
+              "status": "pending_transcription"
+            }
+          ]
+        },
+        {
+          "id": "G7ENG-T1-1.2",
+          "name": "Reading",
+          "week_range": [
+            5,
+            7
+          ],
+          "outcomes": [
+            {
+              "id": "G7ENG-T1-1.2.1",
+              "outcome_text": "TODO_TRANSCRIBE",
+              "source_ref": "KICD English G7 design, Strand 1.0 LANGUAGE SKILLS, sub-strand Reading",
+              "status": "pending_transcription"
+            }
+          ]
+        },
+        {
+          "id": "G7ENG-T1-1.3",
+          "name": "Grammar in Use",
+          "week_range": [
+            7,
+            9
+          ],
+          "outcomes": [
+            {
+              "id": "G7ENG-T1-1.3.1",
+              "outcome_text": "TODO_TRANSCRIBE",
+              "source_ref": "KICD English G7 design, Strand 1.0 LANGUAGE SKILLS, sub-strand Grammar in Use",
+              "status": "pending_transcription"
+            }
+          ]
+        },
+        {
+          "id": "G7ENG-T1-1.4",
+          "name": "Writing",
+          "week_range": [
+            10,
+            11
+          ],
+          "outcomes": [
+            {
+              "id": "G7ENG-T1-1.4.1",
+              "outcome_text": "TODO_TRANSCRIBE",
+              "source_ref": "KICD English G7 design, Strand 1.0 LANGUAGE SKILLS, sub-strand Writing",
+              "status": "pending_transcription"
+            }
+          ]
+        },
+        {
+          "id": "G7ENG-T1-1.5",
+          "name": "Comprehension",
+          "week_range": [
+            11,
+            12
+          ],
+          "outcomes": [
+            {
+              "id": "G7ENG-T1-1.5.1",
+              "outcome_text": "TODO_TRANSCRIBE",
+              "source_ref": "KICD English G7 design, Strand 1.0 LANGUAGE SKILLS, sub-strand Comprehension",
+              "status": "pending_transcription"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

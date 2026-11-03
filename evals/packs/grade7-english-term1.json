@@ -1,0 +1,50 @@
+{
+  "pack": {
+    "id": "test-pack-english",
+    "learning_area": "English",
+    "grade": 7,
+    "curriculum": "CBC",
+    "term": 1,
+    "version": "0.0-test"
+  },
+  "source": {
+    "title": "Test design",
+    "edition": "test",
+    "publisher": "Kenya Institute of Curriculum Development"
+  },
+  "term": {
+    "weeks": 4,
+    "lessons_per_week": 5
+  },
+  "strands": [
+    {
+      "id": "S1",
+      "number": "1.0",
+      "name": "TEST",
+      "sub_strands": [
+        {
+          "id": "ENG-T-1.1",
+          "name": "Listening and Speaking",
+          "week_range": [
+            1,
+            2
+          ],
+          "outcomes": [
+            {
+              "id": "ENG-T-1.1.1",
+              "outcome_text": "Learners listen to a short talk and answer oral questions.",
+              "source_ref": "test",
+              "status": "transcribed"
+            },
+            {
+              "id": "ENG-T-1.1.2",
+              "outcome_text": "TODO_TRANSCRIBE",
+              "source_ref": "test",
+              "status": "pending_transcription"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

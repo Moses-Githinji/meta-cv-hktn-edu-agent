@@ -1,0 +1,32 @@
+{
+  "id": "diagram-round-trip",
+  "subject": "mathematics",
+  "level": 7,
+  "term": 1,
+  "pack": "tiny-pack",
+  "mode": "offline",
+  "objective": "A rendered graph reads back to the spec it claims to show.",
+  "script": [
+    {"tool": "check_diagram", "args": {"spec": {
+      "kind": "graph", "title": "Plot",
+      "x": {"min": 0, "max": 10}, "y": {"min": 0, "max": 10},
+      "points": [{"x": 2, "y": 3, "label": "A"}],
+      "segments": [{"a": [0, 0], "b": [10, 10]}]
+    }}},
+    {"tool": "make_diagram", "args": {"spec": {
+      "kind": "graph", "title": "Plot",
+      "x": {"min": 0, "max": 10}, "y": {"min": 0, "max": 10},
+      "points": [{"x": 2, "y": 3, "label": "A"}],
+      "segments": [{"a": [0, 0], "b": [10, 10]}]
+    }}}
+  ],
+  "expect": {
+    "figures": 1,
+    "readback": [
+      {"kind": "graph", "title": "Plot",
+       "x": {"min": 0, "max": 10}, "y": {"min": 0, "max": 10},
+       "points": [{"x": 2, "y": 3, "label": "A"}],
+       "segments": [{"a": [0, 0], "b": [10, 10]}]}
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "id": "exam-filing",
+  "subject": "mathematics",
+  "level": 7,
+  "term": 1,
+  "pack": "tiny-pack",
+  "mode": "offline",
+  "objective": "File an exam with a balanced blueprint and marking scheme.",
+  "script": [
+    {"tool": "set_checklist", "args": {"items": [
+      {"id": "whole_numbers", "question": "Cover T-1.1.1 this term",
+       "evidence_needed": "Outcome T-1.1.1 exact text"},
+      {"id": "factors", "question": "Cover T-1.2.1 this term",
+       "evidence_needed": "Outcome T-1.2.1 exact text"}
+    ]}},
+    {"tool": "cite_outcome", "args": {
+      "item": "whole_numbers", "outcome_id": "T-1.1.1",
+      "quote": "Learners count whole numbers up to one million in real situations.",
+      "claim": "whole numbers are covered"}},
+    {"tool": "cite_outcome", "args": {
+      "item": "factors", "outcome_id": "T-1.2.1",
+      "quote": "Learners list factors of whole numbers up to one hundred accurately.",
+      "claim": "factors are covered"}},
+    {"tool": "check_answers", "args": {
+      "questions": [{"id": "Q1", "marks": 4}, {"id": "Q2", "marks": 3}],
+      "answers": [
+        {"question_id": "Q1", "answer": "46000.", "marks": 4},
+        {"question_id": "Q2", "answer": "1, 2, 3, 4, 6, 9, 12, 18, 36.", "marks": 3}
+      ]}},
+    {"tool": "submit_document", "args": {
+      "conclusion": "End of term exam.",
+      "findings": [
+        {"item": "whole_numbers", "status": "proven",
+         "summary": "Whole numbers examined.",
+         "citations": [{"outcome_id": "T-1.1.1",
+           "quote": "Learners count whole numbers up to one million in real situations."}]},
+        {"item": "factors", "status": "proven",
+         "summary": "Factors examined.",
+         "citations": [{"outcome_id": "T-1.2.1",
+           "quote": "Learners list factors of whole numbers up to one hundred accurately."}]}
+      ],
+      "gaps": "None.",
+      "kind": "exam",
+      "exam": {
+        "blueprint": {"total_marks": 7, "sections": [
+          {"outcome_id": "T-1.1.1", "questions": 1, "marks_each": 4},
+          {"outcome_id": "T-1.2.1", "questions": 1, "marks_each": 3}
+        ]},
+        "questions": [
+          {"id": "Q1", "text": "Round 45678 to the nearest thousand.",
+           "marks": 4, "answer": "46000.", "outcome_id": "T-1.1.1"},
+          {"id": "Q2", "text": "List all factors of 36.",
+           "marks": 3, "answer": "1, 2, 3, 4, 6, 9, 12, 18, 36.", "outcome_id": "T-1.2.1"}
+        ],
+        "marking_scheme": [
+          {"question_id": "Q1", "answer": "46000.", "marks": 4},
+          {"question_id": "Q2", "answer": "1, 2, 3, 4, 6, 9, 12, 18, 36.", "marks": 3}
+        ]
+      }}}
+  ],
+  "expect": {"status": "answered", "cited": ["T-1.1.1", "T-1.2.1"], "exam_total": 7}
+}
