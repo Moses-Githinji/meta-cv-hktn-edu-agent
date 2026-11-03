@@ -75,11 +75,13 @@
   .vstatus.err { background:var(--red-bg); color:var(--red); }
   .spinner { width:14px; height:14px; border:2px solid #c9d1d9; border-top-color:var(--accent, #1f6feb); border-radius:50%; animation:spin .8s linear infinite; flex:none; }
   @keyframes spin { to { transform:rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .spinner { animation:none; } }
   .vresult { margin-top:8px; padding:6px 8px; border-radius:6px; }
   .vresult.fresh { animation: flash 2.4s ease-out; }
   .vresult .when { color:var(--muted); font-size:12px; font-weight:normal; }
   dialog { width:min(900px,90vw); border:0; border-radius:10px; padding:14px; } dialog pre{max-height:70vh}
   a.file { color:var(--blue); cursor:pointer; text-decoration:underline; margin-right:10px; font-size:12px; }
+  a.file.disabled { opacity:.45; cursor:default; text-decoration:none; }
   select { font:inherit; font-size:12px; padding:3px; max-width:100%; }
   header .case-pick select { font-size:13px; padding:4px 8px; border-radius:6px; border:0; background:#fff; color:var(--ink); max-width:360px; cursor:pointer; }
   header .case-pick select:disabled { opacity:.6; cursor:default; }
@@ -137,8 +139,6 @@
   .doctabs button.on { background:var(--blue); border-color:var(--blue); color:#fff; }
   .docpdf { width:100%; height:60vh; border:1px solid var(--line); border-radius:8px; background:#fff; }
   .dochead { font-size:13px; margin:2px 0 6px; }
-  .docform label { font-size:12px; color:var(--muted); font-weight:600; display:block; margin-top:6px; }
-  .docform input[type=text] { width:100%; font:inherit; font-size:13px; padding:6px 8px; border-radius:6px; border:1px solid var(--line); margin:3px 0; }
 </style>
 </head>
 <body>
@@ -258,7 +258,7 @@ const norm = s => String(s ?? "").normalize("NFKC").toLowerCase().replace(/[\u20
 const CITE = new Set(["cite_outcome", "record_fact"]);
 const SUBMIT = new Set(["submit_document", "submit_memo"]);
 const ASK = new Set(["ask_teacher", "request_evidence"]);
-const DOC_WHATS = [["scheme", "Scheme"], ["exam", "Exam"], ["marking-scheme", "Marking scheme"], ["lesson-plan", "Lesson plan"]];
+const DOC_WHATS = [["scheme", "Scheme"], ["exam", "Exam"], ["lesson-plan", "Lesson plan"]];
 const citationsOf = rec => (rec && (rec.citations || rec.facts)) || [];
 const documentOf = rec => rec && (rec.document || rec.memo);
 const docRows = doc => asList(doc && (doc.rows || doc.findings)).filter(f => f && typeof f === "object");
@@ -523,10 +523,10 @@ async function fillOutcomes() {
     el.innerHTML = `<b>Curriculum pack${r.o.sub_strand ? " · " + esc(r.o.sub_strand) : ""}:</b> ${esc(short(r.o.text, 320))}<div>${found ? "✓ The quoted words appear in this outcome." : "✕ The quoted words do not appear in this outcome."}</div>`;
   }
 }
-// ---------- document viewer and email ----------
+// ---------- document viewer ----------
 function openDoc(what) {
   if (!selected || !detail) return;
-  window._doc = {what, fmt: (window._doc && window._doc.fmt) || "pdf", busy: false, result: null, token: 0};
+  window._doc = {what, fmt: (window._doc && window._doc.fmt) || "pdf", downloading: false, token: 0};
   renderDocViewer();
 }
 function setDocFmt(fmt) {
@@ -542,20 +542,12 @@ function renderDocViewer() {
   if (!v || !detail) return;
   const rec = detail.record || {}, doc = documentOf(rec) || {};
   const title = txt(doc.title || doc.conclusion || docLabel(v.what));
-  if (v.subject === undefined) v.subject = `${title} [${selected}]`;
   const gaps = asList(doc.gaps).map(txt).filter(Boolean);
-  const smtp = !!(info || {}).smtp_configured;
   const stamp = `run=${encodeURIComponent(selected)}&what=${v.what}&format=${v.fmt}`;
   dialog(`${docLabel(v.what)} · ${title}`,
     `<div class="dochead"><span class="badge s-${esc(doc.status || "unknown")}">${esc(doc.status || "unknown")}</span> <span class="muted">${docRows(doc).length} rows${gaps.length ? ` · ${gaps.length} gaps` : ""}</span></div>`
-    + `<div class="doctabs">${["pdf", "docx"].map(f => `<button class="${f === v.fmt ? "on" : ""}" onclick="setDocFmt('${f}')">${f === "pdf" ? "PDF" : "Word"}</button>`).join("")}<a class="file" href="/api/export?${stamp}&download=1">Download ${v.fmt.toUpperCase()}</a></div>`
-    + `<div id="docPreview"></div>`
-    + `<div class="docform"><label>To (comma-separated)</label><input type="text" id="docTo" placeholder="teacher@school.edu" value="${esc(v.to || "")}" oninput="window._doc.to=this.value">`
-    + `<label>Subject</label><input type="text" id="docSubject" value="${esc(v.subject || "")}" oninput="window._doc.subject=this.value">`
-    + `<label>Message (optional — a default is used when empty)</label><textarea id="docMessage" placeholder="A note to go with the attachment…" oninput="window._doc.message=this.value">${esc(v.message || "")}</textarea></div>`
-    + `<div class="steps" style="margin-top:8px"><button class="primary" ${smtp && !v.busy ? "" : "disabled"} onclick="sendDoc()">${v.busy ? "Sending…" : "Send email"}</button></div>`
-    + `<div id="docMailResult"></div>`);
-  paintDocMail();
+    + `<div class="doctabs">${["pdf", "docx"].map(f => `<button class="${f === v.fmt ? "on" : ""}" onclick="setDocFmt('${f}')">${f === "pdf" ? "PDF" : "Word"}</button>`).join("")}<a class="file" href="/api/export?${stamp}&download=1" onclick="return downloadDoc(this)">Download ${v.fmt.toUpperCase()}</a></div>`
+    + `<div id="docPreview"></div>`);
   loadDocPreview();
 }
 async function loadDocPreview() {
@@ -576,35 +568,37 @@ async function loadDocPreview() {
       window._docBlob = url;
       box.innerHTML = `<embed class="docpdf" type="application/pdf" src="${url}">`;
     } else {
-      box.innerHTML = `<div class="muted small" style="margin-bottom:4px">Word files cannot preview in the browser — the document text is shown instead. Use Download or Send email for the file itself.</div>` + docHtml(doc, rec, false);
+      box.innerHTML = `<div class="muted small" style="margin-bottom:4px">Word files cannot preview in the browser — the document text is shown instead. Use Download for the file itself.</div>` + docHtml(doc, rec, false);
       fillOutcomes();
     }
   } catch (e) {
     if (window._doc === v && v.token === my) box.innerHTML = `<div class="cite-src bad">${esc(e.message)}</div>`;
   }
 }
-function paintDocMail() {
-  const v = window._doc, box = $("docMailResult");
-  if (!v || !box) return;
-  const smtp = !!(info || {}).smtp_configured;
-  box.innerHTML = v.busy ? `<div class="vstatus"><span class="spinner"></span> Sending…</div>`
-    : v.result ? `<div class="cite-src ${v.result.ok ? "ok" : "bad"}">${esc(v.result.text)}</div>`
-    : (smtp ? "" : `<div class="hint">Add SMTP_HOST and SMTP_FROM to .env to enable sending (see .env.example).</div>`);
-}
-async function sendDoc() {
+async function downloadDoc(el) {
   const v = window._doc;
-  if (!v || v.busy) return;
-  const to = (($("docTo") || {}).value || "").trim();
-  if (!to) { toast("Type at least one recipient address.", true); return; }
-  v.busy = true; v.result = null; paintDocMail();
+  if (!v || v.downloading) return false;
+  const label = el.innerHTML;
+  v.downloading = true;
+  el.classList.add("disabled");
+  el.innerHTML = `<span class="spinner"></span> Preparing…`;
   try {
-    const r = await api(`/api/runs/${selected}/send`, {what: v.what, format: v.fmt, to, subject: ($("docSubject") || {}).value || "", message: ($("docMessage") || {}).value || ""});
-    v.result = {ok: true, text: `Sent ${r.file} (${r.bytes} bytes) to ${(r.to || []).join(", ")}`};
-    toast(`Email sent to ${(r.to || []).join(", ")}`);
+    const r = await fetch(el.href);
+    if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || r.statusText);
+    const blob = await r.blob();
+    const disp = r.headers.get("Content-Disposition") || "";
+    const found = /filename="([^"]+)"/.exec(disp);
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = found ? found[1] : `${selected}-${v.what}.${v.fmt}`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
   } catch (e) {
-    v.result = {ok: false, text: e.message}; toast(e.message, true);
+    toast(e.message, true);
   }
-  v.busy = false; paintDocMail();
+  v.downloading = false;
+  if (window._doc === v) { el.classList.remove("disabled"); el.innerHTML = label; }
+  return false;
 }
 
 function renderCards() {
@@ -642,7 +636,7 @@ function renderCards() {
     } else if (status === "unverified") {
       html += `<div class="panel card-yellow"><h2>Document (not checked)</h2>${docHtml(doc, rec, false)}<div class="hint">Checks were off or not run for this document. Run them below before relying on it.</div></div>`;
     }
-    html += `<div class="panel"><h2>Documents</h2><div class="steps">${DOC_WHATS.map(([w, label]) => `<button onclick="openDoc('${w}')">${label}</button>`).join("")}</div><div class="hint">Opens the viewer: read, download, or email the Word/PDF. Built fresh from the record each time.</div></div>`;
+    html += `<div class="panel"><h2>Documents</h2><div class="steps">${DOC_WHATS.map(([w, label]) => `<button onclick="openDoc('${w}')">${label}</button>`).join("")}</div><div class="hint">Opens the viewer: read or download the Word/PDF. Built fresh from the record each time.</div></div>`;
   }
   if (d.id) {
     const off = running || verifyBusy ? "disabled" : "", btn = (what, text, cls = "") => `<button class="${cls}" ${off} onclick="verifyRun('${what}')">${verifyBusy && verifyBusy.what === what ? "Working…" : text}</button>`;

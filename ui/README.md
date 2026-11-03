@@ -28,7 +28,7 @@ This builds three sample runs (waiting for the teacher, waiting for review, appr
 - **Teacher input card:** when the agent asks a question or escalates, type the answer and resume.
 - **Teacher review card:** the finished document finding by finding. Every citation shows the official outcome text from the pack beside it, with a tick if the quoted words appear in it and a cross if they do not. Unverified rows are highlighted and need a tick from you before **Approve** unlocks. The ticks are written into the review notes.
 - **Figures:** a finding with a `figure_id` shows the picture from the run's `figures/` folder.
-- **Documents:** open each export kind in a viewer — read the PDF, download either format, or email it as an attachment. Everything is built fresh from the record, never from stale files.
+- **Documents:** open each export kind in a viewer — read the PDF or download either format (scheme, exam, lesson plan; marking-scheme and email stay terminal-only). Everything is built fresh from the record, never from stale files.
 - **Verify this run:** buttons for the document check, the checklist check and the independent check.
 - **Side panels:** checklist, escalations (reason code, who it is routed to), plan, agent state, and an audit log viewer if the run has one.
 
@@ -60,9 +60,11 @@ A document (filed under `memo`) is `{kind, status, conclusion, gaps, findings[]}
 | `./helper review RUN --list --json` | One row per checklist item, with curriculum text (the same reader the command line uses) |
 | `./helper verify RUN --memo \| --checklist \| --independent --json` | Checks (print a JSON object last) |
 | `./helper export RUN --what WHAT --format FMT --out FILE` | Document viewer and downloads (built fresh each time) |
-| `./helper send RUN --what WHAT --format FMT --to ADDR [--subject S] [--message M] --json` | Email one export (needs `SMTP_HOST` + `SMTP_FROM` in `.env`) |
 | `./helper describe` | JSON with `objective` and `tools[]` (`name`, `description`, `parameters`) |
 | `./helper reset [--clear-runs]` | The Reset button |
+
+Email (`./helper send`) and marking-scheme exports stay terminal-only: the
+backend is unchanged, but the console no longer exposes them.
 
 If a command does not exist yet, the console shows the command's error message. Nothing else breaks.
 

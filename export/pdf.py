@@ -227,7 +227,7 @@ def _table(pages: list, dims: _Dims, payload: dict) -> None:
             x = xs[i]
             if header:
                 page.ops.append(
-                    f"0.85 0.88 0.95 rg {x:.1f} {top - height:.1f} {cols[i]:.1f} {height:.1f} re f"
+                    f"0.85 0.88 0.95 rg {x:.1f} {top - height:.1f} {cols[i]:.1f} {height:.1f} re f 0 g"
                 )
             font = "F2" if header else "F1"
             for n, line in enumerate(cell):

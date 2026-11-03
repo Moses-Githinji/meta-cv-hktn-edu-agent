@@ -404,6 +404,18 @@ class HttpTest(unittest.TestCase):
         except urllib.error.HTTPError as error:
             self.assertEqual(error.code, 404)
 
+    def test_index_hides_email_and_marking_scheme(self):
+        status, body = self.get("/")
+        self.assertEqual(status, 200)
+        page = body.decode("utf-8")
+        self.assertNotIn("Send email", page)
+        self.assertNotIn("marking-scheme", page)
+        self.assertNotIn("docSubject", page)
+        self.assertNotIn("sendDoc", page)
+        self.assertIn("Send answer and resume", page)
+        self.assertIn("downloadDoc", page)
+        self.assertIn("Preparing…", page)
+
 
 if __name__ == "__main__":
     unittest.main()

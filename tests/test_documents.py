@@ -58,6 +58,33 @@ CIRCUIT = {
 }
 
 
+def painted_text_fills(pdf: bytes) -> list:
+    """(text, fill) for every Tj in the content streams, tracking fill color.
+
+    Fill starts black; `r g b rg` / `g g` ops change it (`G` is stroke, not
+    fill, and must not match). Text paints with the fill color, so any
+    non-black entry is text a viewer cannot read on the white page.
+    """
+    texts = []
+    for match in re.finditer(rb"stream\n(.*?)endstream", pdf, re.S):
+        ops = match.group(1).decode("ascii")
+        fill = (0.0, 0.0, 0.0)
+        for tok in re.finditer(
+            r"(\d+(?:\.\d+)?) (\d+(?:\.\d+)?) (\d+(?:\.\d+)?) rg"
+            r"|(\d+(?:\.\d+)?) g(?![A-Za-z])"
+            r"|\((?:[^()\\]|\\.)*\) Tj",
+            ops,
+        ):
+            if tok.group(0).endswith("Tj"):
+                texts.append((tok.group(0), fill))
+            elif tok.group(4) is not None:
+                grey = float(tok.group(4))
+                fill = (grey, grey, grey)
+            else:
+                fill = (float(tok.group(1)), float(tok.group(2)), float(tok.group(3)))
+    return texts
+
+
 def xref_valid(pdf: bytes) -> bool:
     """Independent check: every xref offset points at its object header."""
     match = re.search(rb"startxref\s+(\d+)", pdf)
@@ -434,6 +461,14 @@ class ExportTest(DocumentsBase):
         self.assertIn(b"MediaBox [0 0 842 595]", pdf)
         self.assertIn(b"Objectives", pdf)
         self.assertIn(b"Teaching Methods", pdf)
+
+    def test_scheme_pdf_text_is_painted_black(self) -> None:
+        self.filed_scheme()
+        title, flow, footer = build(self.root, self.run_id, "scheme")
+        painted = painted_text_fills(build_pdf(title, flow, footer, landscape=True))
+        self.assertGreater(len(painted), 10)
+        for text, fill in painted:
+            self.assertEqual((0.0, 0.0, 0.0), fill, f"unreadable text: {text[:60]}")
 
     def test_scheme_export_needs_lessons(self) -> None:
         self.exam_run()
