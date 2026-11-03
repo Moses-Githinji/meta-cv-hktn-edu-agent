@@ -3,7 +3,7 @@
 A teaching agent for the Kenyan Competency-Based Curriculum — all levels
 (Pre-Primary, Primary, Junior School, Senior School) and all learning
 areas — forked from the
-[legal-agent workshop](https://github.com/Moses-Githinji/legal-agent-workshop.git).
+[legal-agent workshop](https://github.com/meta-models/legal-agent-workshop).
 It plans term coverage from hand-built curriculum packs, quotes learning
 outcomes exactly as printed in the official KICD designs, and files
 documents (schemes of work, lesson plans, exams) for teacher sign-off.
