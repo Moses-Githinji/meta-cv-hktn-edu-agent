@@ -74,4 +74,4 @@ While the legal fork is renamed step by step, the console accepts both: `cite_ou
 
 - Item-level approve/edit and head-of-department review run in the terminal for now (`./helper review RUN --item …`, `--hod-approve`/`--hod-reject`); the console shows their results but has no buttons for them yet.
 - Approval acknowledgements are saved inside the review notes. A dedicated `--acknowledge` option on `./helper review` would store them as data.
-- The page's stylesheet and helper functions come from the workshop console. The workshop repository has no licence file that I found, so check its terms before you distribute this.
+- The page's stylesheet and helper functions come from the workshop console. Verified 3 Nov 2026: neither `meta-models/legal-agent-workshop` nor the intermediate fork ships a licence file. These derived parts are kept with attribution (see the repo README); confirm reuse terms with the hackathon organizers before redistributing beyond this entry.

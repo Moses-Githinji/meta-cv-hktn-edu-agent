@@ -3,7 +3,7 @@
 A teaching agent for the Kenyan Competency-Based Curriculum — all levels
 (Pre-Primary, Primary, Junior School, Senior School) and all learning
 areas — forked from the
-[legal-agent workshop](https://github.com/Moses-Githinji/legal-agent-workshop.git).
+[legal-agent workshop](https://github.com/meta-models/legal-agent-workshop).
 It plans term coverage from hand-built curriculum packs, quotes learning
 outcomes exactly as printed in the official KICD designs, and files
 documents (schemes of work, lesson plans, exams) for teacher sign-off.
@@ -75,6 +75,9 @@ To reproduce the project end to end on your own machine, follow
 
 ## Fork notes (Phase 1C)
 
+Upstream: Meta's [meta-models/legal-agent-workshop](https://github.com/meta-models/legal-agent-workshop),
+via [Moses-Githinji/legal-agent-workshop](https://github.com/Moses-Githinji/legal-agent-workshop).
+
 Renamed: `agent_kit/` → `edu_kit/`, `legal_agent/` → `teaching_agent/`,
 `CASE_DIR` → `TEACHING_PACK_DIR`. Removed: `cases/`, `ground_truth/`,
 `world/`, `solutions/`, `ui/` (legal content; not copied — the current
@@ -89,3 +92,15 @@ Planned later-phase renames (kept stable now to avoid breaking the kit):
 `case_record.py` → `teaching_record.py`, `scripts/reset_case.py` →
 `scripts/reset_pack.py`, and retirement of the legal tools once teaching
 verification exists.
+
+## License
+
+New code in this repository is MIT-licensed — see [LICENSE](LICENSE)
+(copyright 2026 Moses Githinji, ShuleWeb).
+
+Provenance: this project builds on the workshop sources credited in Fork
+notes above. Neither upstream repository ships a license file (verified
+3 Nov 2026 via the GitHub API and the upstream root listing), so there
+are no upstream license terms to comply with beyond default copyright;
+upstream-derived files are kept with attribution, and reuse beyond this
+hackathon entry should be confirmed with the organizers.
